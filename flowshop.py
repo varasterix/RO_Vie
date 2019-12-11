@@ -32,10 +32,10 @@ class Flowshop:
     def definir_par(self, nom):
         """ crée un problème de flowshop à partir d'un fichier """
         # ouverture du fichier en mode lecture
-        fdonnees = open(nom,"r")
+        fdonnees = open(nom, "r")
         # lecture de la première ligne
         ligne = fdonnees.readline() 
-        l = ligne.split() # on récupère les valeurs dans une liste
+        l = ligne.split()  # on récupère les valeurs dans une liste
         self.nb_jobs = int(l[0])
         self.nb_machines = int(l[1])
        

@@ -72,11 +72,11 @@ class Ordonnancement:
 
 # "main" pour tester la classe   
 if __name__ == "__main__":
-    a = job.Job(1,[1,1,1,1,10])
-    b = job.Job(2,[1,1,1,4,8])
+    a = job.Job(1, [1, 1, 1, 1, 10])
+    b = job.Job(2, [1, 1, 1, 4, 8])
     a.afficher()
     b.afficher()
-    l = [a,b]
+    l = [a, b]
     ordo = Ordonnancement(5)
     ordo.ordonnancer_job(a)
     ordo.ordonnancer_job(b)
