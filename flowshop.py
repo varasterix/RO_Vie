@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-"""Résolution du flowshop de permutation :
- """
+""" Résolution du flowshop de permutation """
 
 __author__ = 'Chams Lahlou'
 __date__ = 'Octobre 2019'
