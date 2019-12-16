@@ -3,6 +3,9 @@ from ordonnancement import Ordonnancement
 
 
 def mutation(flowshop, population, mutation_probability=0.4):
+    # parameters: flowshop ; population: liste of ordonnancement objects ; mutation_probability: probability for each
+    # ordonnancement object in the population to mutate
+    # return: the population after mutation
     nb_jobs = flowshop.nb_jobs()
     for i in range(len(population)):
         if random.random() < mutation_probability:

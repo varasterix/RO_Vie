@@ -14,6 +14,9 @@ import local_search
 
 
 def find_best_ordo_in_list(list_ordo):
+    # finds the ordo in the list that has the lowest duration
+    # parameters: list_ordo: list of ordonnancement objects
+    # return the ordonnancement object with the lowest
     best_ordo = list_ordo[0]
     for ordo in list_ordo:
         if ordo.duree() < best_ordo.duree():
