@@ -13,13 +13,17 @@ import solution_crossing
 import mutation
 import local_search
 
+
 def memetic_heuristic(flowshop):
     start_time = time.time()
     best_ordo = Ordonnancement()
     population = initial_population.random_initial_pop(flowshop)
-    while time.time() - start_time < 60 * 10:
+    iteration_time = 0
+    while time.time() - start_time + iteration_time < 60 * 10:
+        start_time_iteration = time.time()
         population = solution_crossing.crossing(flowshop, population)
         population = mutation.mutation(population)
         population = local_search.local_search(population)
         best_ordo = population[0]
+        iteration_time = time.time() - start_time_iteration
     return best_ordo
