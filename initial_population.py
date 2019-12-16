@@ -2,7 +2,7 @@ import copy
 import random
 
 
-def random_initial_pop(flow_shop, nb_value):
+def random_initial_pop(flow_shop, nb_value=10):
     """
     Generates randomly the initial population
     :param flow_shop: an instance of the flow shop permutation problem
