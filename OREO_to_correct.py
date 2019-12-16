@@ -11,7 +11,7 @@ __date__ = 'Octobre 2019'
 
 import job
 import ordonnancement
-import sommet
+import OREO_sommet
 
 import copy
 import heapq
