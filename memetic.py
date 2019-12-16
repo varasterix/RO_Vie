@@ -7,7 +7,6 @@
 
 import time
 from ordonnancement import Ordonnancement
-from flowshop import Flowshop
 import initial_population
 import solution_crossing
 import mutation
