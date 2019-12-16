@@ -124,7 +124,7 @@ class Flowshop():
 	def evaluation_separation(self):
 		nbSom = 0
 		heap = []
-		som = sommet.Sommet([], self.l_job, 0, nbSom)
+		som = OREO_sommet.Sommet([], self.l_job, 0, nbSom)
 		heapq.heappush(heap,som)
 		minLB = MAXINT
 		bestSolu = None
@@ -142,7 +142,7 @@ class Flowshop():
 				tempLB = self.calculer_borne_inf(tempO, nonPlace)
 				if tempLB < minLB :
 					nbSom= nbSom +1
-					tempS = sommet.Sommet(newSeq, nonPlace, tempLB ,nbSom)
+					tempS = OREO_sommet.Sommet(newSeq, nonPlace, tempLB ,nbSom)
 					heapq.heappush(heap, tempS) 
 		return bestSolu.sequence()
 
