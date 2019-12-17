@@ -7,7 +7,6 @@
 
 import time
 from ordonnancement import Ordonnancement
-from flowshop import Flowshop
 import initial_population
 import solution_crossing
 import mutation
@@ -15,6 +14,11 @@ import local_search
 
 
 def find_best_ordo_in_list(list_ordo):
+    """
+    Finds the Ordonnancement object in the given list that has the lowest duration
+    :param list_ordo: list of Ordonnancement objects
+    :return: the Ordonnancement object with the lowest duration
+    """
     best_ordo = list_ordo[0]
     for ordo in list_ordo:
         if ordo.duree() < best_ordo.duree():
@@ -30,7 +34,7 @@ def memetic_heuristic(flowshop):
     while time.time() - start_time + iteration_time < 60 * 10:
         start_time_iteration = time.time()
         population = solution_crossing.crossing(flowshop, population)
-        population = mutation.mutation(population)
+        population = mutation.mutation(flowshop, population)
         population = local_search.local_search(population)
         best_ordo = find_best_ordo_in_list(population)
         iteration_time = time.time() - start_time_iteration
