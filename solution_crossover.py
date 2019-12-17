@@ -9,7 +9,14 @@ def crossover(flowshop, initial_pop):
     :param initial_pop: population of schedulings to cross
     :return population: the population with crossed schedulings
     """
+    nb_jobs = flowshop.nombre_jobs()
     population = initial_pop
+    indices = [i for i in range(nb_jobs)]
+    for j in range(0, len(population), 2):
+        point1, point2 = random.sample(indices, 2)
+        children_temp = crossover_2_points(nb_jobs, population[j], population[j+1], point1, point2)
+        population.append(children_temp[0])
+        population.append(children_temp[1])
     return population
 
 
