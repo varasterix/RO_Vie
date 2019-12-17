@@ -12,4 +12,4 @@ def crossingIndividuals(ordo1, ordo2):
     """croise 2 ordonnancements et retourne l'ordo fils"""
 
     for i in range(len(ordo1.seq)):
-        lis
+        liskk
