@@ -11,25 +11,36 @@ def crossover(flowshop, initial_pop):
     """
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop
+    population = sort_by_duration(population)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
         point1, point2 = random.sample(indices, 2)
-        children_temp = crossover_2_points(nb_jobs, population[j], population[j+1], point1, point2)
+        children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
         population.append(children_temp[0])
         population.append(children_temp[1])
     return population
 
 
-def crossover_2_points(nb_jobs, sched1, sched2, point1, point2):
+def sort_by_duration(population):
+    for i in range(len(population) - 1):
+        best_index = i
+        for j in range(i + 1, len(population)):
+            if population[j].duree() < population[best_index].duree():
+                best_index = j
+        population[i], population[best_index] = population[best_index], population[i]
+    return population
+
+
+def crossover_2_points(sched1, sched2, point1, point2):
     """
     Crosses two schedulings with the
-    :param nb_jobs: the number of jobs of the flowshop
     :param sched1: parent 1 for crossover
     :param sched2: parent 2 for crossover
     :param point1: first point of the interval to swap, INTEGER between 0 and nb_jobs
     :param point2: second point of the interval to swap, INTEGER between 0 and nb_jobs, different of point1
     :return population: the two children schedulings
     """
+    nb_jobs = len(sched1.sequence())
     point1, point2 = min(point1, point2), max(point1, point2)
     seq1 = sched1.sequence()
     seq2 = sched2.sequence()
