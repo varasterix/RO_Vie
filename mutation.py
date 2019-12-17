@@ -3,9 +3,14 @@ from ordonnancement import Ordonnancement
 
 
 def mutation(flowshop, population, mutation_probability=0.4):
-    # parameters: flowshop ; population: liste of ordonnancement objects ; mutation_probability: probability for each
-    # ordonnancement object in the population to mutate
-    # return: the population after mutation
+    """
+    Returns a new population after mutation given an instance of the flowshop permutation problem, a population and a
+    mutation probability
+    :param flowshop: a Flowshop object
+    :param population: list of Ordonnancement objects
+    :param mutation_probability: probability for each Ordonnancement object in the population to mutate
+    :return: the population after mutation
+    """
     nb_jobs = flowshop.nb_jobs()
     for i in range(len(population)):
         if random.random() < mutation_probability:
