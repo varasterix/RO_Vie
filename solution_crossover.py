@@ -13,7 +13,7 @@ def crossover(flowshop, initial_pop):
     return population
 
 
-def crossover_3_partitions(nb_jobs, sched1, sched2, point1, point2):
+def crossover_2_points(nb_jobs, sched1, sched2, point1, point2):
     """
     Crosses two schedulings with the
     :param nb_jobs: the number of jobs of the flowshop
