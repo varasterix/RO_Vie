@@ -1,5 +1,6 @@
 import copy
 import random
+import ordonnancement
 
 
 def random_initial_pop(flow_shop, nb_value=10):
@@ -9,10 +10,15 @@ def random_initial_pop(flow_shop, nb_value=10):
     :param nb_value: number of element in the initial population to generate
     :return population: the initial population for the memetic algorithm
     """
+    population_seq = []
     population = []
     start = [i for i in range(flow_shop.nb_machines)]
     for i in range(nb_value):
         random.shuffle(start)
         elem = copy.copy(start)
-        population.append(elem)
+        population_seq.append(elem)
+    for seq in population_seq :
+        temp_scheduling = ordonnancement.Ordonnancement()
+        temp_scheduling.ordonnancer_liste_job(seq)
+        population.append()
     return population
