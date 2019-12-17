@@ -45,9 +45,10 @@ def create_solution_figure(ordonnancement, show_durations=True):
                                         text=str(duration), showarrow=True, font=dict(color='black')))
 
         span = 256 / nb_jobs
-        colors = {"Job " + str(job.numero()): 'rgb(' + str((j * span) % 256) + ', ' + str((84 + j * span) % 256) + ', '
-                                              + str((169 + j * span) % 256) + ')'
-                  for j, job in enumerate(ordonnancement.seq)}
+        colors = {"Job " + str(job.numero()): 'rgb(' + str((job.numero() * span) % 256) + ', '
+                                              + str((84 + job.numero() * span) % 256) + ', '
+                                              + str((169 + job.numero() * span) % 256) + ')'
+                  for job in ordonnancement.seq}
 
         figure_name = 'Scheduling_' + str(nb_jobs) + '_jobs_on_' + str(nb_machines) + "_machines"
         figure = ff.create_gantt(tasks, colors=colors, index_col='Resource', show_colorbar=True, group_tasks=True,
