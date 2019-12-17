@@ -22,6 +22,11 @@ def crossover(flowshop, initial_pop):
 
 
 def sort_by_duration(population):
+    """
+    Sorts the population by descending duration
+    :param population: list of schedulings to sort
+    :return population: the sorted population of scheduling as a list
+    """
     for i in range(len(population) - 1):
         best_index = i
         for j in range(i + 1, len(population)):
