@@ -1,6 +1,6 @@
 import copy
 import random
-import ordonnancement
+from ordonnancement import Ordonnancement
 
 
 def random_initial_pop(flow_shop, nb_value=10):
@@ -12,13 +12,13 @@ def random_initial_pop(flow_shop, nb_value=10):
     """
     population_seq = []
     population = []
-    start = [i for i in range(flow_shop.nb_machines)]
+    start = [flow_shop.liste_jobs(i) for i in range(flow_shop.nb_jobs)]
     for i in range(nb_value):
         random.shuffle(start)
         elem = copy.copy(start)
         population_seq.append(elem)
-    for seq in population_seq :
-        temp_scheduling = ordonnancement.Ordonnancement()
+    for seq in population_seq:
+        temp_scheduling = Ordonnancement(flow_shop.nb_machines)
         temp_scheduling.ordonnancer_liste_job(seq)
-        population.append()
+        population.append(temp_scheduling)
     return population
