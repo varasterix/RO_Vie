@@ -3,6 +3,7 @@
 #   - solution crossing
 #   - mutation
 #   - local search
+#   - selection
 # The 3 last stages are iterated several times
 
 import time
