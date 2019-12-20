@@ -47,5 +47,7 @@ def random_initial_pop(flow_shop, nb_value=10):
 
 def deterministic_initial_pop(flow_shop, nb_value=10):
     #TODO
-    # NEH, tri selon la durée des n taches, jhonson rules sur toutes les sommes possibles
+    # NEH,
+    # tri selon la durée des n taches,
+    # jhonson rules sur toutes les sommes possibles
     return []
