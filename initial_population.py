@@ -3,6 +3,8 @@ import math
 import random
 from ordonnancement import Ordonnancement
 
+MAXINT = 10000
+
 
 def initial_pop(flow_shop, deter_prop, random_prop):
     """
@@ -47,7 +49,32 @@ def random_initial_pop(flow_shop, nb_value=10):
 
 def deterministic_initial_pop(flow_shop, nb_value=10):
     #TODO
-    # NEH,
-    # tri selon la durée des n taches,
-    # jhonson rules sur toutes les sommes possibles
+    # NEH, (1)
+    # tri selon la durée des n taches, (nb_machine)
+    # jhonson rules sur toutes les sommes possibles (nb_machine-1)
+    # durée totale des jobs (1,2 ...)
+    # selectionner nb_value parmis celles proposés -> creer les ordonnancements
     return []
+
+
+def neh_order(flow_shop):
+    """
+    Compute the NEH scheduling of flow_shop
+    :param flow_shop: flow shop to schedule
+    :return best_order: return the NEH scheduling of flow_shop
+    """
+    sorted_jobs = sorted(flow_shop.l_job, key=lambda job: job.duree(), reverse=True)
+    best_order = []
+    for job in sorted_jobs:
+        min_duration = MAXINT
+        best_pos = 0
+        for i in range(0, len(best_order) + 1):
+            scheduling = Ordonnancement(flow_shop.nb_machines)
+            new_list = [j for j in best_order]
+            new_list.insert(i, job)
+            scheduling.ordonnancer_liste_job(new_list)
+            if scheduling.duree() < min_duration:
+                min_duration = scheduling.duree()
+                best_pos = i
+        best_order.insert(best_pos, job)
+    return best_order
