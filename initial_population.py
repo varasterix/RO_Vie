@@ -47,6 +47,32 @@ def random_initial_pop(flow_shop, nb_value=10):
     return population
 
 
+def johnson_rule_order(flow_shop, sum_index):
+    list_to_order = []
+
+    for j in flow_shop.l_job:
+        start = 0
+        end = 0
+        for i in range(0, sum_index):
+            start += j.duree_operation(i)
+        for i in range(sum_index, flow_shop.nb_machines):
+            end += j.duree_opeation(i)
+        list_to_order.append((j, start, end))
+    john_start = []
+    john_end = []
+    while len(list_to_order) != 0:
+        min_start = min(list_to_order, key=lambda t: t[1])
+        min_end = min(list_to_order, key=lambda t: t[2])
+        if min_start[1] < min_end[2]:
+            john_start.append(min_start[0])
+            list_to_order.remove(min_start)
+        else:
+            john_end.insert(0, min_end[0])
+            list_to_order.remove(min_end)
+    johnson_order = john_start + john_end
+    return johnson_order
+
+
 def deterministic_initial_pop(flow_shop, nb_value=10):
     """
 
@@ -61,7 +87,9 @@ def deterministic_initial_pop(flow_shop, nb_value=10):
         temp_sep_desc = job_duration_order_desc(flow_shop, m_index)
         temp_sep_asc = job_duration_order_asc(flow_shop, m_index)
         all_deterministic_seq.append(temp_sep_asc, temp_sep_desc)
-    # TODO : jhonson rules sur toutes les sommes possibles (nb_machine-1)
+    for sum_index in range(flow_shop.nb_machines-1):
+        temp_johnson_seq = johnson_rule_order(flow_shop, sum_index)
+        all_deterministic_seq.append(temp_johnson_seq)
     seq_deter_sample = random.sample(all_deterministic_seq, nb_value)
     deter_pop = []
     for seq in seq_deter_sample:
