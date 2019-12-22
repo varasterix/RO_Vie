@@ -48,19 +48,33 @@ def random_initial_pop(flow_shop, nb_value=10):
 
 
 def deterministic_initial_pop(flow_shop, nb_value=10):
-    #TODO
-    # NEH, (1)
-    # tri selon la durée des n taches, (nb_machine)
-    # jhonson rules sur toutes les sommes possibles (nb_machine-1)
-    # durée totale des jobs (1,2 ...)
-    # selectionner nb_value parmis celles proposés -> creer les ordonnancements
-    return []
+    """
+
+    :param flow_shop:
+    :param nb_value:
+    :return deter_pop:
+    """
+    all_deterministic_seq = []
+    neh_seq = neh_order(flow_shop)
+    all_deterministic_seq.append(neh_seq)
+    for m_index in range(flow_shop.nb_machines):
+        temp_sep_desc = job_duration_order_desc(flow_shop, m_index)
+        temp_sep_asc = job_duration_order_asc(flow_shop, m_index)
+        all_deterministic_seq.append(temp_sep_asc, temp_sep_desc)
+    # TODO : jhonson rules sur toutes les sommes possibles (nb_machine-1)
+    seq_deter_sample = random.sample(all_deterministic_seq, nb_value)
+    deter_pop = []
+    for seq in seq_deter_sample:
+        ordo = Ordonnancement(flow_shop.nb_machines)
+        ordo.ordonnancer_liste_job(seq)
+        deter_pop.append(ordo)
+    return deter_pop
 
 
 def neh_order(flow_shop):
     """
     Compute the NEH scheduling of flow_shop
-    :param flow_shop: flow shop to schedule
+    :param flow_shop: an instance of the flow shop permutation problem
     :return best_order: return the NEH scheduling of flow_shop
     """
     sorted_jobs = sorted(flow_shop.l_job, key=lambda job: job.duree(), reverse=True)
@@ -78,3 +92,25 @@ def neh_order(flow_shop):
                 best_pos = i
         best_order.insert(best_pos, job)
     return best_order
+
+
+def job_duration_order_desc(flow_shop, m_index):
+    """
+
+    :param flow_shop:
+    :param m_index:
+    :return sorted_jobs:
+    """
+    sorted_jobs = sorted(flow_shop.l_job, key=lambda job: job.duree_operation(m_index), reverse=True)
+    return sorted_jobs
+
+
+def job_duration_order_asc(flow_shop, m_index):
+    """
+
+    :param flow_shop:
+    :param m_index:
+    :return sorted_jobs:
+    """
+    sorted_jobs = sorted(flow_shop.l_job, key=lambda job: job.duree_operation(m_index), reverse=False)
+    return sorted_jobs
