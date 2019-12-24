@@ -1,6 +1,6 @@
 import job
 import ordonnancement
-
+import flowshop
 
 def valueOfOrdo(ordo):
     return ordo.date_disponibilite[ordo.nb_machines-1]
@@ -37,6 +37,31 @@ def crossingIndividuals(ordo1, ordo2, flowshop):
     childOrdo = ordonnancement.Ordonnancement(flowshop.nb_machines)
     childOrdo.ordonnancer_liste_job(childrenSeq)
     return childOrdo
+
+
+def testCrossingIndividuals():
+    j1 = job.Job(1, [1, 3, 5, 18, 23])
+    j2 = job.Job(2, [1, 3, 5, 18, 23])
+    j3 = job.Job(3, [1, 3, 5, 18, 23])
+    j4 = job.Job(4, [1, 3, 5, 18, 23])
+    j5 = job.Job(5, [1, 3, 5, 18, 23])
+    j6 = job.Job(6, [1, 3, 5, 18, 23])
+    ordo1 = ordonnancement.Ordonnancement(5)
+    ordo2 = ordonnancement.Ordonnancement(5)
+    ordo1.ordonnancer_liste_job([j3,j4,j1,j5,j6,j2])
+    ordo2.ordonnancer_liste_job([j1,j5,j3,j2,j6,j4])
+    fs = flowshop.Flowshop(6,5,[j1,j2,j3,j4,j5,j6])
+    child = crossingIndividuals(ordo1, ordo2,fs)
+    print("solution found\n")
+    print(["j"+str(child.seq[i].num) for i in range(len(child.seq))])
+    print("possible expected solutions \n ")
+    print(["j3", "j1", "j5", "j4", "j6", "j2"])
+    print(["j1", "j3", "j5", "j4", "j6", "j2"])
+    print(["j3", "j1", "j5", "j4", "j2", "j6"])
+    print(["j1", "j3", "j5", "j4", "j2", "j6"])
+
+
+testCrossingIndividuals()
 
 
 
