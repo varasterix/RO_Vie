@@ -77,5 +77,27 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
     :param mutation_probability: probability for each Ordonnancement object in the population to mutate
     :return: the population after mutation
     """
-    # TODO
+    nb_jobs = flowshop.nb_jobs()
+    mutated_population = []
+    for ordo in population:
+        if random.random() < mutation_probability:
+            sequence = ordo.sequence()
+            indices = [i for i in range(nb_jobs)]
+            a, b = random.sample(indices, 2)
+            if a < b:
+                temp = sequence[a]
+                for j in range(a, b):
+                    sequence[j] = sequence[j+1]
+                sequence[b] = temp
+            elif a > b:
+                temp = sequence[b]
+                for k in range(b, a):
+                    sequence[k] = sequence[k+1]
+                sequence[a] = temp
+            mutated_ordo = Ordonnancement(ordo.nb_machines)
+            for m in range(len(sequence)):
+                mutated_ordo.ordonnancer_job(flowshop.liste_jobs[m])
+            mutated_population.append(mutated_ordo)
+        else:
+            mutated_population.append(ordo)
     return population
