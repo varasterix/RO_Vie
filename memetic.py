@@ -7,7 +7,6 @@
 # The 3 last stages are iterated several times
 
 import time
-from ordonnancement import Ordonnancement
 import initial_population
 import solution_crossover
 import mutation
