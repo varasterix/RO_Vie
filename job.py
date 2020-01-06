@@ -30,7 +30,7 @@ class Job:
         return self.duree_job
 
     def afficher(self):
-        print("Job", self.numero(),"de durée totale", self.duree(), ":")
+        print("Job", self.numero(), "de durée totale", self.duree(), ":")
         for num in range(len(self.duree_op)):
             duree = self.duree_op[num]
             debut = self.date_deb[num]
@@ -38,6 +38,13 @@ class Job:
 
     def calculer_duree_job(self):
         return sum(self.duree_op)
+
+    def __eq__(self, other):
+        if not isinstance(other, Job):  # don't attempt to compare against unrelated types
+            return NotImplemented
+        else:
+            return (self.num == other.num and self.nb_op == other.nb_op and self.duree_op == other.duree_op and
+                    self.date_deb == other.date_deb and self.duree_job == other.duree_job)
 
 
 # "main" pour tester la classe

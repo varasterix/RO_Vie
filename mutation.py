@@ -10,8 +10,6 @@ WARNING: If a new mutation method is added, the global "mutation" function of th
 method indices, conditions...) and its function calls everywhere else in the project 
 """
 
-# might be a good idea to factorize the code a little bit there...
-
 
 def mutation(flowshop, population, mutation_swap_probability=0.4, mutation_insert_probability=0.4):
     """
@@ -85,38 +83,10 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
         if random.random() < mutation_probability:
             sequence = ordo.sequence()
             indices = [i for i in range(nb_jobs)]
-            a, b = random.sample(indices, 2)
-            temp = sequence[min(a, b)]
-            for i in range(min(a, b), max(a, b)):
-                sequence[i] = sequence[i+1]
-            sequence[max(a, b)] = temp
-            mutated_ordo = Ordonnancement(ordo.nb_machines)
-            for m in range(len(sequence)):
-                mutated_ordo.ordonnancer_job(flowshop.liste_jobs[m])
-            mutated_population.append(mutated_ordo)
-        else:
-            mutated_population.append(ordo)
-    return population
-
-
-def mutation_scramble(flowshop, population, mutation_probability=0.4):
-    """
-    Returns a new population after mutation given an instance of the flowshop permutation problem, a population and a
-    mutation probability (scramble method)
-    :param flowshop: a Flowshop object
-    :param population: list of Ordonnancement objects
-    :param mutation_probability: probability for each Ordonnancement object in the population to mutate
-    :return: the population after mutation
-    """
-    nb_jobs = flowshop.nb_jobs()
-    mutated_population = []
-    for ordo in population:
-        if random.random() < mutation_probability:
-            sequence = ordo.sequence()
-            indices = [i for i in range(nb_jobs)]
-            a, b = random.sample(indices, 2)
-            # create a subsequence of ordo[a] and ordo[b]
-            # shuffle it
+            elt_index, insert_index = random.sample(indices, 2)
+            temp = sequence[elt_index]
+            sequence.remove(temp)
+            sequence.insert(insert_index, temp)
             mutated_ordo = Ordonnancement(ordo.nb_machines)
             for m in range(len(sequence)):
                 mutated_ordo.ordonnancer_job(flowshop.liste_jobs[m])
