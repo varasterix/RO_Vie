@@ -52,4 +52,4 @@ def memetic_heuristic(flowshop, parameters):
         best_sched = find_best_sched_in_list(population)
         list_best_sched.append(best_sched)
         iteration_time = time.time() - start_time_iteration
-    return best_sched
+    return list_best_sched
