@@ -32,7 +32,8 @@ def mutation(flowshop, population, mutation_swap_probability=0.4, mutation_inser
     insert_mutation_allowed = mutation_insert_probability != 0.0
     mutated_population = copy.copy(population)
 
-    order_of_mutations = random.shuffle([index_method for index_method in range(nb_mutation_methods)])
+    order_of_mutations = [index_method for index_method in range(nb_mutation_methods)]
+    random.shuffle(order_of_mutations)
     for index_method in order_of_mutations:
         if index_method == 0 and swap_mutation_allowed:
             mutated_population = mutation_swap(flowshop, mutated_population, mutation_swap_probability)
@@ -50,7 +51,7 @@ def mutation_swap(flowshop, population, mutation_probability=0.4):
     :param mutation_probability: probability for each Ordonnancement object in the population to mutate
     :return: the population after mutation
     """
-    nb_jobs = flowshop.nb_jobs()
+    nb_jobs = flowshop.nombre_jobs()
     mutated_population = []
     for ordo in population:
         if random.random() < mutation_probability:
@@ -61,7 +62,7 @@ def mutation_swap(flowshop, population, mutation_probability=0.4):
 
             mutated_ordo = Ordonnancement(ordo.nb_machines)
             for k in range(len(sequence)):
-                mutated_ordo.ordonnancer_job(flowshop.liste_jobs[k])
+                mutated_ordo.ordonnancer_job(flowshop.liste_jobs(k))
             mutated_population.append(mutated_ordo)
         else:
             mutated_population.append(ordo)
@@ -77,7 +78,7 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
     :param mutation_probability: probability for each Ordonnancement object in the population to mutate
     :return: the population after mutation
     """
-    nb_jobs = flowshop.nb_jobs()
+    nb_jobs = flowshop.nombre_jobs()
     mutated_population = []
     for ordo in population:
         if random.random() < mutation_probability:
@@ -89,7 +90,7 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
             sequence.insert(insert_index, temp)
             mutated_ordo = Ordonnancement(ordo.nb_machines)
             for m in range(len(sequence)):
-                mutated_ordo.ordonnancer_job(flowshop.liste_jobs[m])
+                mutated_ordo.ordonnancer_job(flowshop.liste_jobs(m))
             mutated_population.append(mutated_ordo)
         else:
             mutated_population.append(ordo)

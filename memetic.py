@@ -14,17 +14,17 @@ import mutation
 import local_search
 
 
-def find_best_ordo_in_list(list_ordo):
+def find_best_sched_in_list(list_sched):
     """
     Finds the Ordonnancement object in the given list that has the lowest duration
-    :param list_ordo: list of Ordonnancement objects
+    :param list_sched: list of Ordonnancement objects
     :return: the Ordonnancement object with the lowest duration
     """
-    best_ordo = list_ordo[0]
-    for ordo in list_ordo:
-        if ordo.duree() < best_ordo.duree():
-            best_ordo = ordo
-    return best_ordo
+    best_sched = list_sched[0]
+    for sched in list_sched:
+        if sched.duree() < best_sched.duree():
+            best_sched = sched
+    return best_sched
 
 
 def memetic_heuristic(flowshop, parameters):
@@ -36,16 +36,20 @@ def memetic_heuristic(flowshop, parameters):
         :return: the Ordonnancement object with the lowest duration
         """
     start_time = time.time()
+    iteration = 0
     population_size = parameters['population_size']
-    best_ordo = Ordonnancement(flowshop.nombre_machines())
+    best_sched = Ordonnancement(flowshop.nombre_machines())
+    list_best_sched = []
     population = initial_population.random_initial_pop(flowshop, nb_value=population_size)
     iteration_time = 0
     while time.time() - start_time + iteration_time < 60 * 10:
+        iteration += 1
         start_time_iteration = time.time()
         population = solution_crossover.crossover(flowshop, population)
         population = mutation.mutation(flowshop, population, mutation_swap_probability=parameters['swap_prob'],
                                        mutation_insert_probability=parameters['insert_prob'])
         population = local_search.local_search(population)
-        best_ordo = find_best_ordo_in_list(population)
+        best_sched = find_best_sched_in_list(population)
+        list_best_sched.append(best_sched)
         iteration_time = time.time() - start_time_iteration
-    return best_ordo
+    return best_sched
