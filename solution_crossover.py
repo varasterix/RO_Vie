@@ -65,9 +65,8 @@ def crossover_2_points(sched1, sched2, point1, point2):
         if seq22[i] not in seq12:
             list_exclude[1].append(i)
     for j in range(len(list_exclude[0])):
-        k = random.randint(0, len(list_exclude[0]) - 1)
+        k = random.randint(0, len(list_exclude[1]) - 1)
         seq12[j], seq22[k] = seq22[k], seq12[j]
-        list_exclude[0].pop(j)
         list_exclude[1].pop(k)
     new_seq1 = seq11 + seq22 + seq13
     new_seq2 = seq21 + seq12 + seq23
