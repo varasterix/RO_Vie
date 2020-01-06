@@ -37,7 +37,6 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
         self.assertEqual(len(initial_pop), len(new_pop))
         for sched in new_pop:
             self.assertEqual(len(sched.sequence()), 5)
-            print(sched.sequence())
             for job in [job_1, job_2, job_3, job_4, job_5]:
                 self.assertIn(job, sched.sequence())
 
