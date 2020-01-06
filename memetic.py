@@ -27,15 +27,24 @@ def find_best_ordo_in_list(list_ordo):
     return best_ordo
 
 
-def memetic_heuristic(flowshop):
+def memetic_heuristic(flowshop, parameters):
+    """
+        memetic heuristic for the flowshop problem
+        :param flowshop: instance of flowshop
+        :param parameters: dict of parameters used in the function.
+            It must contain the following keys: 'population_size', 'swap_prob', 'insert_prob'
+        :return: the Ordonnancement object with the lowest duration
+        """
     start_time = time.time()
+    population_size = parameters['population_size']
     best_ordo = Ordonnancement(flowshop.nombre_machines())
-    population = initial_population.random_initial_pop(flowshop)
+    population = initial_population.random_initial_pop(flowshop, nb_value=population_size)
     iteration_time = 0
     while time.time() - start_time + iteration_time < 60 * 10:
         start_time_iteration = time.time()
         population = solution_crossover.crossover(flowshop, population)
-        population = mutation.mutation(flowshop, population)
+        population = mutation.mutation(flowshop, population, mutation_swap_probability=parameters['swap_prob'],
+                                       mutation_insert_probability=parameters['insert_prob'])
         population = local_search.local_search(population)
         best_ordo = find_best_ordo_in_list(population)
         iteration_time = time.time() - start_time_iteration
