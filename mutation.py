@@ -83,17 +83,10 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
         if random.random() < mutation_probability:
             sequence = ordo.sequence()
             indices = [i for i in range(nb_jobs)]
-            a, b = random.sample(indices, 2)
-            if a < b:
-                temp = sequence[a]
-                for j in range(a, b):
-                    sequence[j] = sequence[j+1]
-                sequence[b] = temp
-            elif a > b:
-                temp = sequence[b]
-                for k in range(b, a):
-                    sequence[k] = sequence[k+1]
-                sequence[a] = temp
+            elt_index, insert_index = random.sample(indices, 2)
+            temp = sequence[elt_index]
+            sequence.remove(temp)
+            sequence.insert(insert_index, temp)
             mutated_ordo = Ordonnancement(ordo.nb_machines)
             for m in range(len(sequence)):
                 mutated_ordo.ordonnancer_job(flowshop.liste_jobs[m])
