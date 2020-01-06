@@ -20,10 +20,10 @@ class Flowshop:
         self.l_job = l_job
 
     def nombre_jobs(self):
-        return self.nombre_jobs
+        return self.nb_jobs
 
     def nombre_machines(self):
-        return self.nombre_machines
+        return self.nb_machines
 
     def liste_jobs(self, num):
         return self.l_job[num]
