@@ -11,6 +11,7 @@ def crossover(flowshop, initial_pop):
     """
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop
+    population_size = len(population)
     population = sort_by_duration(population)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
@@ -18,6 +19,8 @@ def crossover(flowshop, initial_pop):
         children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
         population.append(children_temp[0])
         population.append(children_temp[1])
+    population = sort_by_duration(population)
+    population = population[0:population_size]
     return population
 
 
