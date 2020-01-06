@@ -36,10 +36,9 @@ def memetic_heuristic(flowshop, parameters):
         :return: the Ordonnancement object with the lowest duration
         """
     start_time = time.time()
-    population_size = parameters['population_size']
-    best_sched = Ordonnancement(flowshop.nombre_machines())
+    rdm_size = parameters['rdm_size']
     list_best_sched = []
-    population = initial_population.random_initial_pop(flowshop, rdm_size='rdm_size')
+    population = initial_population.random_initial_pop(flowshop, rdm_size=rdm_size)
     iteration_time = 0
     while time.time() - start_time + iteration_time < 60 * 10:
         start_time_iteration = time.time()
