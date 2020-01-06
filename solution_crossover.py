@@ -42,11 +42,12 @@ def sort_by_duration(population):
 def crossover_2_points(sched1, sched2, point1, point2):
     """
     Crosses two schedulings with the
-    :param sched1: parent 1 for crossover
-    :param sched2: parent 2 for crossover
+    :param nb_jobs: the number of jobs of the flowshop
+    :param sched1: parent 1 for crossover (Ordonnancement object)
+    :param sched2: parent 2 for crossover (Ordonnancement object)
     :param point1: first point of the interval to swap, INTEGER between 0 and nb_jobs
     :param point2: second point of the interval to swap, INTEGER between 0 and nb_jobs, different of point1
-    :return population: the two children schedulings
+    :return population: the two children schedulings (Ordonnancement objects)
     """
     nb_jobs = len(sched1.sequence())
     point1, point2 = min(point1, point2), max(point1, point2)
