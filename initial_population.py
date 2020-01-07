@@ -31,6 +31,7 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
         rdm_pop = random_initial_pop(flow_shop, rdm_size)
 
     starting_pop = rdm_pop + deter_pop
+    random.shuffle(starting_pop)
     return starting_pop
 
 
