@@ -130,7 +130,7 @@ def johnson_rule_order(flow_shop, sum_index):
         for i in range(0, sum_index):
             start += j.duree_operation(i)
         for i in range(sum_index, flow_shop.nb_machines):
-            end += j.duree_opeation(i)
+            end += j.duree_operation(i)
         list_to_order.append((j, start, end))
 
     john_start = []
