@@ -2,21 +2,31 @@ import random
 from ordonnancement import Ordonnancement
 
 
-def crossover(flowshop, initial_pop):
+def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
     """
     Generates a new population by crossing schedulings of the previous one
     :param flowshop: an instance of the flow shop permutation problem
     :param initial_pop: population of schedulings to cross
+    :param cross_1_point_prob: the probability of using the 1 point crossover method for each pair of parent
+    :param cross_2_points_prob: the probability of using the 2 points crossover method for each pair of parent
     :return population: the population with crossed schedulings
     """
+    sum_prop = cross_1_point_prob + cross_2_points_prob
+    cross_1_point_prob /= sum_prop
+    cross_2_points_prob /= sum_prop
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
     population = sort_by_duration(population)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
-        point1, point2 = random.sample(indices, 2)
-        children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
+        method_random = random.random()
+        if method_random < cross_1_point_prob:
+            point = random.randint(indices)
+            children_temp = crossover_1_point(population[j], population[j+1], point)
+        else:
+            point1, point2 = random.sample(indices, 2)
+            children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
         population.append(children_temp[0])
         population.append(children_temp[1])
     population = sort_by_duration(population)
