@@ -10,7 +10,7 @@ def crossover(flowshop, initial_pop):
     :return population: the population with crossed schedulings
     """
     nb_jobs = flowshop.nombre_jobs()
-    population = initial_pop
+    population = initial_pop.copy()
     population_size = len(population)
     population = sort_by_duration(population)
     indices = [i for i in range(nb_jobs)]
@@ -66,9 +66,9 @@ def crossover_2_points(sched1, sched2, point1, point2):
         if seq22[i] not in seq12:
             list_exclude[1].append(i)
     for j in range(len(list_exclude[0])):
-        k = random.randint(0, len(list_exclude[0]) - 1)
-        seq12[j], seq22[k] = seq22[k], seq12[j]
-        list_exclude[0].pop(j)
+        k = random.randint(0, len(list_exclude[1]) - 1)
+        l = list_exclude[1][k]
+        seq12[j], seq22[l] = seq22[l], seq12[j]
         list_exclude[1].pop(k)
     new_seq1 = seq11 + seq22 + seq13
     new_seq2 = seq21 + seq12 + seq23

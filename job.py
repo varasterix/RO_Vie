@@ -46,6 +46,9 @@ class Job:
             return (self.num == other.num and self.nb_op == other.nb_op and self.duree_op == other.duree_op and
                     self.date_deb == other.date_deb and self.duree_job == other.duree_job)
 
+    def __str__(self):
+        return "job_" + str(self.num)
+
 
 # "main" pour tester la classe
 if __name__ == "__main__":
