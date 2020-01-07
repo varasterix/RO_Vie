@@ -22,20 +22,20 @@ def restart(population, preserved_prop, flowshop):
     :param flowshop: instance of the flowshop problem
     :return: the new population
     """
-    random_size = len(population) * (1 - preserved_prop)
-    return extract_best(population, preserved_prop) + initial_population.random_initial_pop(flowshop, random_size)
+    preserved_size = int(len(population) * preserved_prop)
+    random_size = len(population) - preserved_size
+    return extract_best(population, preserved_size) + initial_population.random_initial_pop(flowshop, random_size)
 
 
-def extract_best(list_sched, preserved_prop):
+def extract_best(list_sched, preserved_size):
     """
     Extracts the preserved_prop proportion of the list list_sched that has the lowest durations
     :param list_sched: list of Ordonnancement objects
-    :param preserved_prop: proportion of the best schedulings to keep in the population
+    :param preserved_size: number of schedulings to extract from the population
     :return: the list of schedulings with the lowest durations
     """
-    preserved_nb = len(list_sched) * preserved_prop
     sorted_list = sorted(list_sched, key=lambda sched: sched.duree(), reverse=True)
-    return sorted_list[:preserved_nb]
+    return sorted_list[:preserved_size]
 
 
 def memetic_heuristic(flowshop, parameters):
