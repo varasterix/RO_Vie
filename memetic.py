@@ -32,7 +32,7 @@ def memetic_heuristic(flowshop, parameters):
         :param flowshop: instance of flowshop
         :param parameters: dict of parameters used in the function.
             It must contain the following keys: 'random_prop', 'deter_prop', 'best_deter', 'pop_init_size', 'time_limit'
-            'swap_prob', 'insert_prob'
+            , 'cross_1_point_prob', 'cross_2_points_prob', 'swap_prob', 'insert_prob'
         :return: the Ordonnancement object with the lowest duration
         """
     start_time = time.time()
@@ -45,7 +45,10 @@ def memetic_heuristic(flowshop, parameters):
     iteration_time = 0
     while time.time() - start_time + iteration_time < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
-        population = solution_crossover.crossover(flowshop, population)
+        population = solution_crossover.crossover(flowshop,
+                                                  population,
+                                                  parameters['cross_1_point_prob'],
+                                                  parameters['cross_2_points_prob'])
         population = mutation.mutation(flowshop,
                                        population,
                                        mutation_swap_probability=parameters['swap_prob'],
