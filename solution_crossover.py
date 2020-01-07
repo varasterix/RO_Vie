@@ -42,7 +42,6 @@ def sort_by_duration(population):
 def crossover_2_points(sched1, sched2, point1, point2):
     """
     Crosses two schedulings with the
-    :param nb_jobs: the number of jobs of the flowshop
     :param sched1: parent 1 for crossover (Ordonnancement object)
     :param sched2: parent 2 for crossover (Ordonnancement object)
     :param point1: first point of the interval to swap, INTEGER between 0 and nb_jobs
@@ -67,11 +66,49 @@ def crossover_2_points(sched1, sched2, point1, point2):
             list_exclude[1].append(i)
     for j in range(len(list_exclude[0])):
         k = random.randint(0, len(list_exclude[1]) - 1)
-        l = list_exclude[1][k]
-        seq12[j], seq22[l] = seq22[l], seq12[j]
+        n = list_exclude[1][k]
+        m = list_exclude[0][j]
+        seq12[m], seq22[n] = seq22[n], seq12[m]
         list_exclude[1].pop(k)
     new_seq1 = seq11 + seq22 + seq13
     new_seq2 = seq21 + seq12 + seq23
+    nb_machines = sched1.nb_machines
+    scheduling1 = Ordonnancement(nb_machines)
+    scheduling2 = Ordonnancement(nb_machines)
+    scheduling1.ordonnancer_liste_job(new_seq1)
+    scheduling2.ordonnancer_liste_job(new_seq2)
+    return [scheduling1, scheduling2]
+
+
+def crossover_1_point(sched1, sched2, point1):
+    """
+    Crosses two schedulings with the
+    :param sched1: parent 1 for crossover (Ordonnancement object)
+    :param sched2: parent 2 for crossover (Ordonnancement object)
+    :param point1: separation point to swap the sub-sequences, INTEGER between 0 and nb_jobs
+    :return population: the two children schedulings (Ordonnancement objects)
+    """
+    nb_jobs = len(sched1.sequence())
+    seq1 = sched1.sequence()
+    seq2 = sched2.sequence()
+    seq11 = seq1[0:point1]
+    seq12 = seq1[point1:]
+    seq21 = seq2[0:point1]
+    seq22 = seq2[point1:]
+    list_exclude = [[], []]
+    for i in range(len(seq11)):
+        if seq11[i] not in seq21:
+            list_exclude[0].append(i)
+        if seq21[i] not in seq11:
+            list_exclude[1].append(i)
+    for j in range(len(list_exclude[0])):
+        k = random.randint(0, len(list_exclude[1]) - 1)
+        n = list_exclude[1][k]
+        m = list_exclude[0][j]
+        seq11[m], seq21[n] = seq21[n], seq11[m]
+        list_exclude[1].pop(k)
+    new_seq1 = seq11 + seq22
+    new_seq2 = seq21 + seq12
     nb_machines = sched1.nb_machines
     scheduling1 = Ordonnancement(nb_machines)
     scheduling2 = Ordonnancement(nb_machines)
