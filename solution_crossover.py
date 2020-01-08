@@ -17,9 +17,10 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, ge
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
-    random.shuffle(population)
     if gentrification:
         population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
+    else:
+        random.shuffle(population)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
         method_random = random.random()
