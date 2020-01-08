@@ -34,7 +34,7 @@ def extract_best(list_sched, preserved_size):
     :param preserved_size: number of schedulings to extract from the population
     :return: the list of schedulings with the lowest durations
     """
-    sorted_list = sorted(list_sched, key=lambda sched: sched.duree(), reverse=True)
+    sorted_list = sorted(list_sched, key=lambda sched: sched.duree(), reverse=False)
     return sorted_list[:preserved_size]
 
 
@@ -67,7 +67,7 @@ def memetic_heuristic(flowshop, parameters):
                                        mutation_swap_probability=parameters['swap_prob'],
                                        mutation_insert_probability=parameters['insert_prob'])
         population = local_search.local_search(population)
-        best_sched = max(population, key=lambda sched: sched.duree())
+        best_sched = min(population, key=lambda sched: sched.duree())
         list_best_sched.append(best_sched)
         if is_convergent(population, parameters['entropy_threshold']):
             population = restart(population, parameters['preserved_prop'], flowshop)
