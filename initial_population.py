@@ -27,8 +27,6 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     if deter_size != 0:
         deter_pop = deterministic_initial_pop(flow_shop, deter_size, best_deter)
 
-
-
     rdm_size = pop_init_size - len(deter_pop)
     rdm_pop = []
     if rdm_size != 0:
