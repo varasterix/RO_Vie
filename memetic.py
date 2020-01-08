@@ -14,9 +14,9 @@ import local_search
 from convergence import is_convergent
 
 
-def restart(population, preserved_prop, flowshop):
+def restart_population(population, preserved_prop, flowshop):
     """
-    restart function called when the population is convergent
+    restart_population function called when the population is convergent
     :param population: population to restart
     :param preserved_prop: proportion to preserve
     :param flowshop: instance of the flowshop problem
@@ -24,17 +24,18 @@ def restart(population, preserved_prop, flowshop):
     """
     preserved_size = int(len(population) * preserved_prop)
     random_size = len(population) - preserved_size
-    return extract_best(population, preserved_size) + initial_population.random_initial_pop(flowshop, random_size)
+    return (extract_best_from_population(population, preserved_size) +
+            initial_population.random_initial_pop(flowshop, random_size))
 
 
-def extract_best(list_sched, preserved_size):
+def extract_best_from_population(population, preserved_size):
     """
     Extracts the preserved_prop proportion of the list list_sched that has the lowest durations
-    :param list_sched: list of Ordonnancement objects
+    :param population: list of Ordonnancement objects
     :param preserved_size: number of schedulings to extract from the population
-    :return: the list of schedulings with the lowest durations
+    :return: the list of schedulings (Ordonnancement objects) with the lowest durations of the given size
     """
-    sorted_list = sorted(list_sched, key=lambda sched: sched.duree(), reverse=True)
+    sorted_list = sorted(population, key=lambda sched: sched.duree(), reverse=True)
     return sorted_list[:preserved_size]
 
 
@@ -70,6 +71,6 @@ def memetic_heuristic(flowshop, parameters):
         best_sched = max(population, key=lambda sched: sched.duree())
         list_best_sched.append(best_sched)
         if is_convergent(population, parameters['entropy_threshold']):
-            population = restart(population, parameters['preserved_prop'], flowshop)
+            population = restart_population(population, parameters['preserved_prop'], flowshop)
         iteration_time = time.time() - start_time_iteration
     return list_best_sched
