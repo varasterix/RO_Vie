@@ -1,7 +1,6 @@
 import job
 import ordonnancement
 import flowshop
-import random as rd
 
 def valueOfOrdo(ordo):
     return ordo.duree()
@@ -17,16 +16,8 @@ def crossing(flowshop, initial_pop):
         population.append(crossingIndividuals(child1))
         population.append(crossingIndividuals(child2))
         population.append(crossingIndividuals(child3))
-    sumValue = 0
-    for ordo in population:
-        sumValue += ordo.duree()
-    finalPop = []
-    for ordo in population:
-        proba = (sumValue - ordo.duree())/((len(population)-1)*ordo.duree())
-        if rd.random() < proba:
-            finalPop.append(ordo)
-
-    return finalPop
+    population.sort(key = valueOfOrdo)
+    return population[:n]
 
 
 
