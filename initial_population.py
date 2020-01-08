@@ -1,6 +1,7 @@
 import copy
 import math
 import random
+import warnings
 from ordonnancement import Ordonnancement
 
 MAXINT = 10000
@@ -26,6 +27,8 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     if deter_size != 0:
         deter_pop = deterministic_initial_pop(flow_shop, deter_size, best_deter)
 
+
+
     rdm_size = pop_init_size - len(deter_pop)
     rdm_pop = []
     if rdm_size != 0:
@@ -33,8 +36,10 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
 
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
-    # print("[INIT_POP] Total size " + len(starting_pop) + "\tDeterministic size " + len(deter_size) + "\tRandom size " + len(rdm_pop))
-    # TODO signaler le changement de proportion
+    if len(deter_pop) < deter_size:
+        warnings.warn("[INIT_POP] Deterministic proportion is too high, new proportion : \nTotal size "
+                      + str(len(starting_pop)) + "\t\tDeterministic size " + str(len(deter_pop)) + "\t\tRandom size "
+                      + str(len(rdm_pop)), Warning)
     return starting_pop
 
 

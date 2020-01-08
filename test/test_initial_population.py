@@ -15,7 +15,7 @@ job_5 = Job(5, [1, 3, 1, 1, 1])
 l_job = [job_1, job_2, job_3, job_4, job_5]
 flowshop_1 = Flowshop(5, 5, l_job)
 flowshop_2 = Flowshop()
-flowshop_2.definir_par("..\\data\\dataset3\\jeu2.txt")
+flowshop_2.definir_par("data\\dataset3\\jeu2.txt")
 
 seq_1 = [job_3, job_1, job_5, job_2, job_4]
 seq_2 = [job_1, job_2, job_4, job_3, job_5]
@@ -24,7 +24,7 @@ seq_3 = [job_1, job_4, job_3, job_2, job_5]
 
 class MyTestCase(unittest.TestCase):
     def test_initial_pop(self):
-        size = 40
+        size = 100
         init_pop = ip.initial_pop(flowshop_1, 0.5, 0.5, False, size)
         self.assertEqual(len(init_pop), size)
         for sched in init_pop:
