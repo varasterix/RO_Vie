@@ -87,13 +87,13 @@ def deterministic_initial_pop(flow_shop, deter_size, best_deter):
             ordo = Ordonnancement(flow_shop.nb_machines)
             ordo.ordonnancer_liste_job(seq)
             all_deterministic_ordo.append(ordo)
-        sorted_scheduling = sorted(all_deterministic_ordo, key=lambda o: o.duree(), reverse=True)
+        sorted_scheduling = sorted(all_deterministic_ordo, key=lambda o: o.duree(), reverse=False)
         if deter_size > len(sorted_scheduling):
             deter_pop = sorted_scheduling
         else:
             deter_pop = sorted_scheduling[0:deter_size]
     else:
-        if deter_size > all_deterministic_seq:
+        if deter_size > len(all_deterministic_seq):
             seq_deter_sample = all_deterministic_seq
         else:
             seq_deter_sample = random.sample(all_deterministic_seq, deter_size)
