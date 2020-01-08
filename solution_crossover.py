@@ -9,6 +9,7 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, ge
     :param initial_pop: population of schedulings to cross
     :param cross_1_point_prob: the probability of using the 1 point crossover method for each pair of parent
     :param cross_2_points_prob: the probability of using the 2 points crossover method for each pair of parent
+    :param gentrification: if True, the parents are crossed by duration, else randomly
     :return population: the population with crossed schedulings
     """
     sum_prop = cross_1_point_prob + cross_2_points_prob
