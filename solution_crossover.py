@@ -22,7 +22,7 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
     for j in range(0, len(population), 2):
         method_random = random.random()
         if method_random < cross_1_point_prob:
-            point = random.randint(indices)
+            point = random.randint(0, nb_jobs)
             children_temp = crossover_1_point(population[j], population[j+1], point)
         else:
             point1, point2 = random.sample(indices, 2)
