@@ -57,12 +57,13 @@ def memetic_heuristic(flowshop, parameters):
                                                 best_deter=parameters['best_deter'],
                                                 pop_init_size=parameters['pop_init_size'])
     iteration_time = 0
-    while time.time() - start_time + iteration_time < 60 * parameters['time_limit']:
+    while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
         population = solution_crossover.crossover(flowshop,
                                                   population,
                                                   parameters['cross_1_point_prob'],
-                                                  parameters['cross_2_points_prob'])
+                                                  parameters['cross_2_points_prob'],
+                                                  parameters['gentrification'])
         population = mutation.mutation(flowshop,
                                        population,
                                        mutation_swap_probability=parameters['swap_prob'],

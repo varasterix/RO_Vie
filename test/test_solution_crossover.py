@@ -47,7 +47,7 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
         parent_2.ordonnancer_liste_job([job_1, job_4, job_5, job_2, job_3])
         initial_pop = [parent_1, parent_2]
         flowshop = Flowshop(5, 5)
-        new_pop = crossover(flowshop, initial_pop, cross_1_point_prob=0.5, cross_2_points_prob=0.5)
+        new_pop = crossover(flowshop, initial_pop, cross_1_point_prob=0.5, cross_2_points_prob=0.5, gentrification=True)
         self.assertEqual(len(initial_pop), len(new_pop))
         for sched in new_pop:
             self.assertEqual(len(sched.sequence()), 5)
