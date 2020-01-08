@@ -62,7 +62,8 @@ def memetic_heuristic(flowshop, parameters):
         population = solution_crossover.crossover(flowshop,
                                                   population,
                                                   parameters['cross_1_point_prob'],
-                                                  parameters['cross_2_points_prob'])
+                                                  parameters['cross_2_points_prob'],
+                                                  parameters['gentrification'])
         population = mutation.mutation(flowshop,
                                        population,
                                        mutation_swap_probability=parameters['swap_prob'],

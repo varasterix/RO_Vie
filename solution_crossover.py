@@ -2,7 +2,7 @@ import random
 from ordonnancement import Ordonnancement
 
 
-def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
+def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, gentrification):
     """
     Generates a new population by crossing schedulings of the previous one
     :param flowshop: an instance of the flow shop permutation problem
@@ -17,7 +17,9 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
-    population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
+    random.shuffle(population)
+    if gentrification:
+        population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
         method_random = random.random()
