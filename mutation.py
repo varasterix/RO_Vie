@@ -53,20 +53,19 @@ def mutation_swap(flowshop, population, mutation_probability=0.4):
     """
     nb_jobs = flowshop.nombre_jobs()
     mutated_population = []
-    for ordo in population:
+    for sched in population:
         if random.random() < mutation_probability:
-            sequence = ordo.sequence()
+            sequence = sched.sequence().copy()
             indices = [j for j in range(nb_jobs)]
             a, b = random.sample(indices, 2)
             sequence[a], sequence[b] = sequence[b], sequence[a]
 
-            mutated_ordo = Ordonnancement(ordo.nb_machines)
-            for k in range(len(sequence)):
-                mutated_ordo.ordonnancer_job(flowshop.liste_jobs(k))
-            mutated_population.append(mutated_ordo)
+            mutated_sched = Ordonnancement(sched.nb_machines)
+            mutated_sched.ordonnancer_liste_job(sequence)
+            mutated_population.append(mutated_sched)
         else:
-            mutated_population.append(ordo)
-    return population
+            mutated_population.append(sched)
+    return mutated_population
 
 
 def mutation_insert(flowshop, population, mutation_probability=0.4):
@@ -80,18 +79,18 @@ def mutation_insert(flowshop, population, mutation_probability=0.4):
     """
     nb_jobs = flowshop.nombre_jobs()
     mutated_population = []
-    for ordo in population:
+    for sched in population:
         if random.random() < mutation_probability:
-            sequence = ordo.sequence()
+            sequence = sched.sequence().copy()
             indices = [i for i in range(nb_jobs)]
             elt_index, insert_index = random.sample(indices, 2)
             temp = sequence[elt_index]
             sequence.remove(temp)
             sequence.insert(insert_index, temp)
-            mutated_ordo = Ordonnancement(ordo.nb_machines)
-            for m in range(len(sequence)):
-                mutated_ordo.ordonnancer_job(flowshop.liste_jobs(m))
-            mutated_population.append(mutated_ordo)
+
+            mutated_sched = Ordonnancement(sched.nb_machines)
+            mutated_sched.ordonnancer_liste_job(sequence)
+            mutated_population.append(mutated_sched)
         else:
-            mutated_population.append(ordo)
-    return population
+            mutated_population.append(sched)
+    return mutated_population
