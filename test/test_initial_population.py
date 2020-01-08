@@ -24,12 +24,24 @@ seq_3 = [job_1, job_4, job_3, job_2, job_5]
 
 class MyTestCase(unittest.TestCase):
     def test_initial_pop(self):
-        pass
-        # TODO
+        size = 40
+        init_pop = ip.initial_pop(flowshop_1, 0.5, 0.5, False, size)
+        self.assertEqual(len(init_pop), size)
+        for sched in init_pop:
+            self.assertEqual(len(sched.sequence()), 5)
+            self.assertEqual(sched.has_duplicate(), False)
+            for job in flowshop_1.l_job:
+                self.assertIn(job, sched.sequence())
 
     def test_random_initial_pop(self):
-        pass
-        # TODO
+        rdm_size = 100
+        rdm_pop = ip.random_initial_pop(flowshop_1, rdm_size)
+        self.assertEqual(len(rdm_pop), rdm_size)
+        for sched in rdm_pop:
+            self.assertEqual(len(sched.sequence()), 5)
+            self.assertEqual(sched.has_duplicate(), False)
+            for job in flowshop_1.l_job:
+                self.assertIn(job, sched.sequence())
 
     def test_deterministic_initial_pop_rdm(self):
         deter_size = 12

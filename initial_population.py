@@ -33,9 +33,8 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
 
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
-    print("[INIT_POP] Total size " + len(starting_pop) +
-          "\tDeterministic size " + len(deter_size) +
-          "\tRandom size " + len(rdm_pop))  # TODO signaler le changement de proportion
+    # print("[INIT_POP] Total size " + len(starting_pop) + "\tDeterministic size " + len(deter_size) + "\tRandom size " + len(rdm_pop))
+    # TODO signaler le changement de proportion
     return starting_pop
 
 
