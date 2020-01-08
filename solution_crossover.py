@@ -17,35 +17,20 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
-    population = sort_by_duration(population)
+    population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
         method_random = random.random()
         if method_random < cross_1_point_prob:
-            point = random.randint(indices)
+            point = random.randint(0, nb_jobs)
             children_temp = crossover_1_point(population[j], population[j+1], point)
         else:
             point1, point2 = random.sample(indices, 2)
             children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
         population.append(children_temp[0])
         population.append(children_temp[1])
-    population = sort_by_duration(population)
+    population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
     population = population[0:population_size]
-    return population
-
-
-def sort_by_duration(population):
-    """
-    Sorts the population by descending duration
-    :param population: list of schedulings to sort
-    :return population: the sorted population of scheduling as a list
-    """
-    for i in range(len(population) - 1):
-        best_index = i
-        for j in range(i + 1, len(population)):
-            if population[j].duree() < population[best_index].duree():
-                best_index = j
-        population[i], population[best_index] = population[best_index], population[i]
     return population
 
 
