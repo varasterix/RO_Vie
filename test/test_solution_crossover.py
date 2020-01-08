@@ -25,7 +25,6 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
             self.assertEqual(sched.has_duplicate(), False)
             for job in [job_1, job_2, job_3, job_4, job_5]:
                 self.assertIn(job, sched.sequence())
-        # TODO
 
     def test_crossover_1_points(self):
         parent_1 = Ordonnancement(job_1.nb_op)
@@ -48,7 +47,7 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
         parent_2.ordonnancer_liste_job([job_1, job_4, job_5, job_2, job_3])
         initial_pop = [parent_1, parent_2]
         flowshop = Flowshop(5, 5)
-        new_pop = crossover(flowshop, initial_pop, 0.5, 0.5, True)
+        new_pop = crossover(flowshop, initial_pop, cross_1_point_prob=0.5, cross_2_points_prob=0.5, gentrification=True)
         self.assertEqual(len(initial_pop), len(new_pop))
         for sched in new_pop:
             self.assertEqual(len(sched.sequence()), 5)
