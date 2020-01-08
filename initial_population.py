@@ -13,7 +13,8 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     :param deter_prop: desired proportion of the initial population computed in a deterministic manner
     :param random_prop: desired proportion of the initial population randomly generated
     :param best_deter: if true, select deterministic initial pop by scheduling duration, else random selection
-    :param pop_init_size: size of the initial population, if bigger than the size of the total population, redefined to 1/3 of the total population
+    :param pop_init_size: size of the initial population, if bigger than the size of the total population, redefined
+    to 1/3 of the total population
     :return: the initial population for the memetic algorithm
     """
     pop_max_size = math.factorial(flow_shop.nb_jobs)
@@ -32,6 +33,9 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
 
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
+    print("[INIT_POP] Total size " + len(starting_pop) +
+          "\tDeterministic size " + len(deter_size) +
+          "\tRandom size " + len(rdm_pop))  # TODO signaler le changement de proportion
     return starting_pop
 
 
@@ -84,9 +88,15 @@ def deterministic_initial_pop(flow_shop, deter_size, best_deter):
             ordo.ordonnancer_liste_job(seq)
             all_deterministic_ordo.append(ordo)
         sorted_scheduling = sorted(all_deterministic_ordo, key=lambda o: o.duree(), reverse=True)
-        deter_pop = sorted_scheduling[0:deter_size]
+        if deter_size > len(sorted_scheduling):
+            deter_pop = sorted_scheduling
+        else:
+            deter_pop = sorted_scheduling[0:deter_size]
     else:
-        seq_deter_sample = random.sample(all_deterministic_seq, deter_size)
+        if deter_size > all_deterministic_seq:
+            seq_deter_sample = all_deterministic_seq
+        else:
+            seq_deter_sample = random.sample(all_deterministic_seq, deter_size)
         for seq in seq_deter_sample:
             ordo = Ordonnancement(flow_shop.nb_machines)
             ordo.ordonnancer_liste_job(seq)
