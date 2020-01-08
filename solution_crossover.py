@@ -45,8 +45,8 @@ def crossover_2_points(sched1, sched2, point1, point2):
     """
     nb_jobs = len(sched1.sequence())
     point1, point2 = min(point1, point2), max(point1, point2)
-    seq1 = sched1.sequence()
-    seq2 = sched2.sequence()
+    seq1 = sched1.sequence().copy()
+    seq2 = sched2.sequence().copy()
     seq11 = seq1[0:point1]
     seq12 = seq1[point1:point2]
     seq13 = seq1[point2:nb_jobs]
@@ -84,8 +84,8 @@ def crossover_1_point(sched1, sched2, point1):
     :return population: the two children schedulings (Ordonnancement objects)
     """
     nb_jobs = len(sched1.sequence())
-    seq1 = sched1.sequence()
-    seq2 = sched2.sequence()
+    seq1 = sched1.sequence().copy()
+    seq2 = sched2.sequence().copy()
     seq11 = seq1[0:point1]
     seq12 = seq1[point1:]
     seq21 = seq2[0:point1]
