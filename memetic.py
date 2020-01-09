@@ -45,7 +45,7 @@ def memetic_heuristic(flowshop, parameters):
         :param flowshop: instance of flowshop
         :param parameters: dict of parameters used in the function.
             It must contain the following keys: 'random_prop', 'deter_prop', 'best_deter', 'pop_init_size', 'time_limit'
-            , 'cross_1_point_prob', 'cross_2_points_prob', 'gentrification' 'swap_prob', 'insert_prob',
+            , 'cross_1_point_prob', 'cross_2_points_prob', 'gentrification', 'swap_prob', 'insert_prob',
             'entropy_threshold', 'preserved_prop'
         :return: the Ordonnancement object with the lowest duration
         """
