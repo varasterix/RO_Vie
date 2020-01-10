@@ -39,7 +39,6 @@ def local_search_swap(flowshop, sched, iteration):
     duration_candidate = candidate.duree()
 
     for a in range(0, iteration):
-        a = a + 1
         for i in range(0, nb_jobs - 1):
             for j in range(i + 1, nb_jobs):
                 temp = copy.copy(sched)
@@ -51,7 +50,6 @@ def local_search_swap(flowshop, sched, iteration):
         if (duration > duration_candidate):
             sched = candidate
             duration = duration_candidate
-            stop = False
         else:
             break
     return sched
