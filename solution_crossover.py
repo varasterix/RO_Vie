@@ -2,19 +2,21 @@ import random
 from ordonnancement import Ordonnancement
 
 
-def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, gentrification):
+def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, cross_position_prob, gentrification):
     """
     Generates a new population by crossing schedulings of the previous one
     :param flowshop: an instance of the flow shop permutation problem
     :param initial_pop: population of schedulings to cross
     :param cross_1_point_prob: the probability of using the 1 point crossover method for each pair of parent
     :param cross_2_points_prob: the probability of using the 2 points crossover method for each pair of parent
+    :param cross_position_prob: the probability of using the position crossover method for each pair of parent
     :param gentrification: if True, the parents are crossed by duration, else randomly
     :return population: the population with crossed schedulings
     """
-    sum_prop = cross_1_point_prob + cross_2_points_prob
+    sum_prop = cross_1_point_prob + cross_2_points_prob + cross_position_prob
     cross_1_point_prob /= sum_prop
     cross_2_points_prob /= sum_prop
+    cross_position_prob /= sum_prop
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
@@ -28,11 +30,13 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, ge
         if method_random < cross_1_point_prob:
             point = random.randint(0, nb_jobs)
             children_temp = crossover_1_point(population[j], population[j+1], point)
-        else:
+        elif method_random < cross_1_point_prob + cross_2_points_prob:
             point1, point2 = random.sample(indices, 2)
             children_temp = crossover_2_points(population[j], population[j+1], point1, point2)
-        population.append(children_temp[0])
-        population.append(children_temp[1])
+        else:
+            children_temp = crossover_position(population[j], population[j+1])
+        for child in children_temp:
+            population.append(child)
     population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
     population = population[0:population_size]
     return population
@@ -133,10 +137,14 @@ def crossover_position(sched1, sched2):
     childseq = []
     for i in range(len(positionschild)):
         min_position = min(positionschild)
-        index_min_position = positionschild.index(min_position)
-        next_job = seq1[index_min_position]
+        indices_next_job = []
+        for j in range(len(positionschild)):
+            if positionschild[j] == min_position:
+                indices_next_job.append(j)
+        index_next_job = random.sample(indices_next_job, 1)[0]
+        next_job = seq1[index_next_job]
         childseq.append(next_job)
-        positionschild[index_min_position] = 2 * len(seq1) + 1
+        positionschild[index_next_job] = 2 * len(seq1) + 1
     nb_machines = sched1.nb_machines
     childsched = Ordonnancement(nb_machines)
     childsched.ordonnancer_liste_job(childseq)
