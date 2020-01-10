@@ -19,8 +19,11 @@ def local_search(flowshop, sched, iteration):
 
 
 def swap(i, j, sched):
-    sched.sequence()[i], sched.sequence()[j] = sched.sequence()[j], sched.sequence()[i]
-
+    sequence = sched.sequence().copy()
+    sequence[i], sequence[j] = sequence[j], sequence[i]
+    new_sched = Ordonnancement(sched.nb_machines)
+    new_sched.ordonnancer_liste_job(sequence)
+    return new_sched
 
 def local_search_swap(flowshop, sched, iteration):
     """
@@ -31,29 +34,26 @@ def local_search_swap(flowshop, sched, iteration):
     """
     nb_jobs = flowshop.nombre_jobs()
 
-    candidat = copy.copy(sched)
-    duree = sched.duree()
-    duree_candidat = candidat.duree()
+    candidate = copy.copy(sched)
+    duration = sched.duree()
+    duration_candidate = candidate.duree()
 
-    a = 0
-    stop = False
-
-    while stop == False or a < iteration:
+    for a in range(0, iteration):
         a = a + 1
-        for i in range(0, nb_jobs - 2):
-            for j in range(i + 1, nb_jobs - 1):
-                provisoire = copy.copy(sched)
-                swap(i, j, provisoire)
-                duree_provisoire = provisoire.duree()
-                if (duree_provisoire < duree_candidat):
-                    duree_candidat = duree_provisoire
-                    candidat = provisoire
-        if (duree > duree_candidat):
+        for i in range(0, nb_jobs - 1):
+            for j in range(i + 1, nb_jobs):
+                temp = copy.copy(sched)
+                ls_swap = swap(i,j,temp)
+                duration_temp = ls_swap.duree()
+                if (duration_temp < duration_candidate):
+                    duration_candidate = duration_temp
+                    candidate = ls_swap
+        if (duration > duration_candidate):
+            sched = candidate
+            duration = duration_candidate
             stop = False
-            duree = duree_candidat
-            sched = candidat
         else:
-            stop = True
+            break
     return sched
 
 
