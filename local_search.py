@@ -53,8 +53,8 @@ def local_search_insert(flowshop, sched, iteration):
     duration_candidate = candidate.duree()
 
     for a in range(0, iteration):
-        for i in range(0, nb_jobs - 1):
-            for j in range(0, nb_jobs - 1):
+        for i in range(0, nb_jobs):
+            for j in range(0, nb_jobs):
                 if (i != j):
                     temp = copy.copy(sched)
                     sequence = temp.sequence().copy()
