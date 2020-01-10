@@ -130,14 +130,13 @@ def crossover_position(sched1, sched2):
     for i in range(len(seq1)):
         job = seq1[i]
         positionschild[i] = seq1.index(job) + seq2.index(job)
-    print(positionschild)
     childseq = []
-    while len(positionschild) > 0:
+    for i in range(len(positionschild)):
         min_position = min(positionschild)
-        next_job = seq1[positionschild.index(min_position)]
+        index_min_position = positionschild.index(min_position)
+        next_job = seq1[index_min_position]
         childseq.append(next_job)
-        positionschild.remove(min_position)
-    print(childseq)
+        positionschild[index_min_position] = 2 * len(seq1) + 1
     nb_machines = sched1.nb_machines
     childsched = Ordonnancement(nb_machines)
     childsched.ordonnancer_liste_job(childseq)
