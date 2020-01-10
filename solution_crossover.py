@@ -125,3 +125,31 @@ def crossover_1_point(sched1, sched2, point1):
     scheduling1.ordonnancer_liste_job(new_seq1)
     scheduling2.ordonnancer_liste_job(new_seq2)
     return [scheduling1, scheduling2]
+
+
+def crossover_position(sched1, sched2):
+    """
+    crossing rules : two lists of jobs' positions : [2,3,5,1,4] & [3,4,1,2,5] the index of the lists are the jobs
+    and the values are the positions. We sum the two lists : [5,7,6,3,9] and we rearenge it [2,4,3,1,5]
+    :param sched1: the first parent
+    :param sched2: the second parent
+    :return: the new Ordonnancenement object
+    """
+    seq1 = sched1.sequence()
+    seq2 = sched2.sequence()
+    positionschild = [0] * len(seq1)
+    for i in range(len(seq1)):
+        job = seq1[i]
+        positionschild[i] = seq1.index(job) + seq2.index(job)
+    print(positionschild)
+    childseq = []
+    while len(positionschild) > 0:
+        min_position = min(positionschild)
+        next_job = seq1[positionschild.index(min_position)]
+        childseq.append(next_job)
+        positionschild.remove(min_position)
+    print(childseq)
+    nb_machines = sched1.nb_machines
+    childsched = Ordonnancement(nb_machines)
+    childsched.ordonnancer_liste_job(childseq)
+    return [childsched]
