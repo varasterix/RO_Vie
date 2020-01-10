@@ -2,13 +2,14 @@ import random
 from ordonnancement import Ordonnancement
 
 
-def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
+def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, gentrification):
     """
     Generates a new population by crossing schedulings of the previous one
     :param flowshop: an instance of the flow shop permutation problem
     :param initial_pop: population of schedulings to cross
     :param cross_1_point_prob: the probability of using the 1 point crossover method for each pair of parent
     :param cross_2_points_prob: the probability of using the 2 points crossover method for each pair of parent
+    :param gentrification: if True, the parents are crossed by duration, else randomly
     :return population: the population with crossed schedulings
     """
     sum_prop = cross_1_point_prob + cross_2_points_prob
@@ -17,7 +18,10 @@ def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob):
     nb_jobs = flowshop.nombre_jobs()
     population = initial_pop.copy()
     population_size = len(population)
-    population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
+    if gentrification:
+        population = sorted(population, key=lambda sched: sched.duree(), reverse=False)
+    else:
+        random.shuffle(population)
     indices = [i for i in range(nb_jobs)]
     for j in range(0, len(population), 2):
         method_random = random.random()
@@ -45,8 +49,8 @@ def crossover_2_points(sched1, sched2, point1, point2):
     """
     nb_jobs = len(sched1.sequence())
     point1, point2 = min(point1, point2), max(point1, point2)
-    seq1 = sched1.sequence()
-    seq2 = sched2.sequence()
+    seq1 = sched1.sequence().copy()
+    seq2 = sched2.sequence().copy()
     seq11 = seq1[0:point1]
     seq12 = seq1[point1:point2]
     seq13 = seq1[point2:nb_jobs]
@@ -84,8 +88,8 @@ def crossover_1_point(sched1, sched2, point1):
     :return population: the two children schedulings (Ordonnancement objects)
     """
     nb_jobs = len(sched1.sequence())
-    seq1 = sched1.sequence()
-    seq2 = sched2.sequence()
+    seq1 = sched1.sequence().copy()
+    seq2 = sched2.sequence().copy()
     seq11 = seq1[0:point1]
     seq12 = seq1[point1:]
     seq21 = seq2[0:point1]
