@@ -1,5 +1,5 @@
 import unittest
-from solution_crossover import crossover_2_points, crossover, crossover_1_point
+from solution_crossover import crossover_2_points, crossover, crossover_1_point, crossover_position
 from flowshop import Flowshop
 from job import Job
 from ordonnancement import Ordonnancement
@@ -40,6 +40,18 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
             for job in [job_1, job_2, job_3, job_4, job_5]:
                 self.assertIn(job, sched.sequence())
 
+    def test_crossover_positions(self):
+        parent_1 = Ordonnancement(job_1.nb_op)
+        parent_2 = Ordonnancement(job_1.nb_op)
+        parent_1.ordonnancer_liste_job([job_2, job_3, job_4, job_5, job_1])
+        parent_2.ordonnancer_liste_job([job_1, job_4, job_5, job_2, job_3])
+        new_pop = crossover_position(parent_1, parent_2)
+        for sched in new_pop:
+            self.assertEqual(len(sched.sequence()), 5)
+            self.assertEqual(sched.has_duplicate(), False)
+            for job in [job_1, job_2, job_3, job_4, job_5]:
+                self.assertIn(job, sched.sequence())
+
     def test_crossover(self):
         parent_1 = Ordonnancement(job_1.nb_op)
         parent_2 = Ordonnancement(job_1.nb_op)
@@ -47,7 +59,11 @@ class TestSolutionCrossoverFileMethods(unittest.TestCase):
         parent_2.ordonnancer_liste_job([job_1, job_4, job_5, job_2, job_3])
         initial_pop = [parent_1, parent_2]
         flowshop = Flowshop(5, 5)
-        new_pop = crossover(flowshop, initial_pop, cross_1_point_prob=0.5, cross_2_points_prob=0.5, gentrification=True)
+        new_pop = crossover(flowshop, initial_pop,
+                            cross_1_point_prob=0.5,
+                            cross_2_points_prob=0.5,
+                            cross_position_prob=0.3,
+                            gentrification=True)
         self.assertEqual(len(initial_pop), len(new_pop))
         for sched in new_pop:
             self.assertEqual(len(sched.sequence()), 5)
