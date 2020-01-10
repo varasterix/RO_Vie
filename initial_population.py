@@ -35,9 +35,11 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
     if len(deter_pop) < deter_size:
-        warnings.warn("[INIT_POP] Deterministic proportion is too high, new proportion : \nTotal size "
-                      + str(len(starting_pop)) + "\t\tDeterministic size " + str(len(deter_pop)) + "\t\tRandom size "
-                      + str(len(rdm_pop)), Warning)
+        warning_title = "[INIT_POP] Deterministic proportion is too high, new proportion : \nTotal size "\
+                        + str(len(starting_pop)) + "\tDeterministic size " + str(len(deter_pop)) + "\tRandom size "\
+                        + str(len(rdm_pop))
+        warnings.formatwarning = custom_formatwarning
+        warnings.warn(warning_title, Warning)
     return starting_pop
 
 
@@ -181,3 +183,8 @@ def job_duration_order_asc(flow_shop, m_index):
     """
     sorted_jobs = sorted(flow_shop.l_job, key=lambda job: job.duree_operation(m_index), reverse=False)
     return sorted_jobs
+
+
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + '\n'
