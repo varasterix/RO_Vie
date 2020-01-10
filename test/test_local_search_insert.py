@@ -3,7 +3,7 @@ import unittest
 from job import Job
 from ordonnancement import Ordonnancement
 from flowshop import Flowshop
-from local_search import local_search_swap
+from local_search import local_search_insert
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])
@@ -21,7 +21,7 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         sched_2.ordonnancer_liste_job([job_1, job_4, job_5, job_2, job_3])
         sched_1duree = sched_1.duree()
         sched_2duree = sched_2.duree()
-        new_sched1 = local_search_swap(flowshop, sched_2, 20)
+        new_sched1 = local_search_insert(flowshop, sched_2, 20)
         new_sched1_duree = new_sched1.duree()
         self.assertTrue(new_sched1.duree() <= sched_2.duree())
         self.assertEqual(len(new_sched1.sequence()), 5)
