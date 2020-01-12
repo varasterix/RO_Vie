@@ -40,7 +40,7 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         self.assertEqual(len(new_scheduling_2.sequence()), 5)
         for job in [job_1, job_2, job_3, job_4, job_5]:
             self.assertIn(job, new_scheduling_1.sequence())
-            self.assertIn(job, new_scheduling_1.sequence())
+            self.assertIn(job, new_scheduling_2.sequence())
 
     def test_swap_neighborhood(self):
         nb_jobs = flow_shop.nombre_jobs()
@@ -107,6 +107,25 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         self.assertEqual(expected_size_neighborhood, len(expected_neighborhood))
         self.assertEqual(expected_size_neighborhood, len(computed_neighborhood))
         self.assertEqual(expected_neighborhood, computed_neighborhood)
+
+    def test_improvement_with_ls(self):
+        job_a = Job(0, [1, 5])
+        job_b = Job(1, [5, 1])
+        flow_shop_2 = Flowshop(2, 2, [job_a, job_b])
+        scheduling = Ordonnancement(job_a.nb_op)
+        scheduling.ordonnancer_liste_job([job_b, job_a])
+        new_scheduling_swap = local_search_swap(flow_shop_2, scheduling, 1)
+        new_scheduling_insert = local_search_insert(flow_shop_2, scheduling, 1)
+        self.assertTrue(scheduling.duree() == 11)
+        self.assertTrue(new_scheduling_swap.duree() < scheduling.duree())
+        self.assertTrue(new_scheduling_insert.duree() < scheduling.duree())
+        self.assertTrue(new_scheduling_swap.duree() == 7)
+        self.assertTrue(new_scheduling_insert.duree() == 7)
+        self.assertEqual(len(new_scheduling_swap.sequence()), 2)
+        self.assertEqual(len(new_scheduling_insert.sequence()), 2)
+        for job in [job_a, job_b]:
+            self.assertIn(job, new_scheduling_swap.sequence())
+            self.assertIn(job, new_scheduling_insert.sequence())
 
 
 if __name__ == '__main__':
