@@ -1,5 +1,5 @@
 import unittest
-from job import Job
+from src.job import Job
 
 
 job_1 = Job(1, [1, 1, 1, 1, 10])

@@ -1,8 +1,8 @@
 import unittest
-from mutation import mutation, mutation_insert, mutation_swap
-from flowshop import Flowshop
-from job import Job
-from ordonnancement import Ordonnancement
+from src.mutation import mutation, mutation_insert, mutation_swap
+from src.flowshop import Flowshop
+from src.job import Job
+from src.ordonnancement import Ordonnancement
 
 flow_shop = Flowshop(5, 5)
 job_1 = Job(1, [1, 1, 1, 1, 10])
