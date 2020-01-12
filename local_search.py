@@ -1,75 +1,82 @@
-import random
 import copy
 from ordonnancement import Ordonnancement
 
-def swap(i, j, sched):
-    sequence = sched.sequence().copy()
-    sequence[i], sequence[j] = sequence[j], sequence[i]
-    new_sched = Ordonnancement(sched.nb_machines)
-    new_sched.ordonnancer_liste_job(sequence)
-    return new_sched
 
-def local_search_swap(flowshop, sched, iteration):
+def swap(i, j, scheduling):
+    sequence = scheduling.sequence().copy()
+    sequence[i], sequence[j] = sequence[j], sequence[i]
+    new_scheduling = Ordonnancement(scheduling.nb_machines)
+    new_scheduling.ordonnancer_liste_job(sequence)
+    return new_scheduling
+
+
+def local_search_swap(flowshop, scheduling, iteration):
     """
-    Returns a new population after local search on an instance of the flowshop population (swap method)
+    Returns a (new) scheduling after local search on the given initial scheduling during the maximum number of
+    iterations given to find a minimum local, given an instance of the flowshop population (swap neighborhood)
+    An iteration is an exploration of all the swap neighborhood of the current best scheduling
     :param flowshop: a Flowshop object
-    :param population: list of Ordonnancement objects
-    :return: the population after local search
+    :param scheduling: a scheduling (Ordonnancement object)
+    :param iteration: maximum number of iterations (explorations of the swap neighborhood) to find a minimum local
+    :return: the scheduling after the given number of iteration of local search
     """
     nb_jobs = flowshop.nombre_jobs()
 
-    candidate = copy.copy(sched)
-    duration = sched.duree()
+    candidate = copy.copy(scheduling)
+    duration = scheduling.duree()
     duration_candidate = candidate.duree()
 
     for a in range(0, iteration):
         for i in range(0, nb_jobs - 1):
             for j in range(i + 1, nb_jobs):
-                temp = copy.copy(sched)
-                ls_swap = swap(i,j,temp)
+                temp = copy.copy(scheduling)
+                ls_swap = swap(i, j, temp)
                 duration_temp = ls_swap.duree()
-                if (duration_temp < duration_candidate):
+                if duration_temp < duration_candidate:
                     duration_candidate = duration_temp
                     candidate = ls_swap
-        if (duration > duration_candidate):
-            sched = candidate
+        if duration > duration_candidate:
+            scheduling = candidate
             duration = duration_candidate
         else:
             break
-    return sched
+    return scheduling
 
 
-def local_search_insert(flowshop, sched, iteration):
+def local_search_insert(flowshop, scheduling, iteration):
     """
-    Returns a new population after local search on an instance of the flowshop population (insert method)
+    Returns a (new) scheduling after local search on the given initial scheduling during the maximum number of
+    iterations given to find a minimum local, given an instance of the flowshop population (insert neighborhood)
+    An iteration is an exploration of all the insert neighborhood of the current best scheduling
     :param flowshop: a Flowshop object
-    :param population: list of Ordonnancement objects
-    :return: the population after local search
+    :param scheduling: a scheduling (Ordonnancement object)
+    :param iteration: maximum number of iterations (explorations of the insert neighborhood) to find a minimum local
+    :return: the scheduling after the given number of iteration of local search
     """
     nb_jobs = flowshop.nombre_jobs()
 
-    candidate = copy.copy(sched)
-    duration = sched.duree()
+    candidate = copy.copy(scheduling)
+    duration = scheduling.duree()
     duration_candidate = candidate.duree()
 
     for a in range(0, iteration):
         for i in range(0, nb_jobs):
             for j in range(0, nb_jobs):
-                if (i != j):
-                    temp = copy.copy(sched)
+                if i != j:
+                    temp = copy.copy(scheduling)
                     sequence = temp.sequence().copy()
                     ls_insert = sequence[i]
                     sequence.remove(ls_insert)
-                    sequence.insert(j,ls_insert)
-                    new_sched = Ordonnancement(temp.nb_machines)
-                    new_sched.ordonnancer_liste_job(sequence)
-                    duration_temp = new_sched.duree()
-                    if (duration_temp < duration_candidate):
+                    sequence.insert(j, ls_insert)
+                    new_scheduling = Ordonnancement(temp.nb_machines)
+                    new_scheduling.ordonnancer_liste_job(sequence)
+                    duration_temp = new_scheduling.duree()
+                    if duration_temp < duration_candidate:
                         duration_candidate = duration_temp
-                        candidate = new_sched
-        if (duration > duration_candidate):
-            sched = candidate
+                        candidate = new_scheduling
+        if duration > duration_candidate:
+            scheduling = candidate
             duration = duration_candidate
         else:
             break
-    return sched
+    return scheduling
