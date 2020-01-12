@@ -113,6 +113,7 @@ def write_global_memetic_results(file_path, global_memetic_results):
 
 def read_grid_search_parameters(file_path):
     param_grid = {}
+    nb_operations = 1
     with open(file_path, 'r') as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
         for index, row in enumerate(reader):
@@ -121,6 +122,7 @@ def read_grid_search_parameters(file_path):
                 parameter_name = row[1]
                 parameter_type = row[2]
                 values = list(filter(lambda value: value != '', row[3:]))
+                nb_operations = nb_operations * len(values)
                 if parameter_type == 'bool':
                     param_grid[parameter_name] = [bool(int(value)) for value in values]
                 elif parameter_type == 'int':
@@ -131,7 +133,7 @@ def read_grid_search_parameters(file_path):
                     param_grid[parameter_name] = [value for value in values]
                 else:
                     raise Exception('Unsupported type of parameter: ' + parameter_type)
-    return ParameterGrid(param_grid)
+    return ParameterGrid(param_grid), nb_operations
 
 
 def write_best_parameters(file_name, parameters, file_path):
