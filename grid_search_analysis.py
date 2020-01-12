@@ -8,7 +8,8 @@ flow_shop_file_path = sys.argv[2]
 store_best_parameters_path = sys.argv[3]
 
 # Loading grid search parameters
-grid_search = read_grid_search_parameters(grid_search_parameters_path)
+grid_search, estimated_nb_operations = read_grid_search_parameters(grid_search_parameters_path)
+print("The number of operations for this instance is estimated at most " + str(estimated_nb_operations))
 
 # Loading an instance of the FlowShop Problem
 flow_shop_instance = Flowshop()
