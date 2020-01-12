@@ -62,7 +62,7 @@ def local_search_insert(flowshop, scheduling, iteration):
     for a in range(0, iteration):
         for i in range(0, nb_jobs):
             for j in range(0, nb_jobs):
-                if i != j:
+                if j != i and (j != i-1 or i == 0):
                     temp = copy.copy(scheduling)
                     sequence = temp.sequence().copy()
                     ls_insert = sequence[i]
