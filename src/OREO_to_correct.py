@@ -9,11 +9,8 @@
 __author__ = 'Chams Lahlou'
 __date__ = 'Octobre 2019'
 
-import job
-import ordonnancement
-import OREO_sommet
+from src import ordonnancement, OREO_sommet, job
 
-import copy
 import heapq
 
 MAXINT = 10000

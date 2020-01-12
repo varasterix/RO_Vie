@@ -1,6 +1,6 @@
 import plotly.figure_factory as ff
-from ordonnancement import Ordonnancement
-from job import Job
+from src.ordonnancement import Ordonnancement
+from src.job import Job
 from datetime import datetime
 import numpy as np
 

@@ -1,5 +1,5 @@
 import random
-from ordonnancement import Ordonnancement
+from src.ordonnancement import Ordonnancement
 
 
 def crossover(flowshop, initial_pop, cross_1_point_prob, cross_2_points_prob, cross_position_prob, gentrification):
