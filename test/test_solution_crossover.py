@@ -1,8 +1,8 @@
 import unittest
-from solution_crossover import crossover_2_points, crossover, crossover_1_point, crossover_position
-from flowshop import Flowshop
-from job import Job
-from ordonnancement import Ordonnancement
+from src.solution_crossover import crossover_2_points, crossover, crossover_1_point, crossover_position
+from src.flowshop import Flowshop
+from src.job import Job
+from src.ordonnancement import Ordonnancement
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])
