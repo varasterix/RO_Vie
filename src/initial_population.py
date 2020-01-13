@@ -15,12 +15,16 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     :param random_prop: desired proportion of the initial population randomly generated
     :param best_deter: if true, select deterministic initial pop by scheduling duration, else random selection
     :param pop_init_size: size of the initial population, if bigger than the size of the total population, redefined
-    to 1/3 of the total population
+    to prop_total_size of the total population
     :return: the initial population for the memetic algorithm
     """
-    pop_max_size = math.factorial(flow_shop.nb_jobs)
-    if pop_max_size < pop_init_size:
-        pop_init_size = round(pop_max_size * 1 / 3)
+    prop_total_size = 1/3
+    if not is_population_size_correct(flow_shop.nb_jobs, pop_init_size):
+        pop_max_size = math.factorial(flow_shop.nb_jobs)
+        pop_init_size = int(math.ceil(pop_max_size * prop_total_size))
+        warning_size = "[INIT_POP] Initial population size is too high, new size: " + str(pop_init_size)
+        warnings.formatwarning = custom_formatwarning
+        warnings.warn(warning_size, Warning)
 
     deter_size = round(deter_prop / (deter_prop + random_prop) * pop_init_size)
     deter_pop = []
@@ -35,12 +39,27 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
     if len(deter_pop) < deter_size:
-        warning_title = "[INIT_POP] Deterministic proportion is too high, new proportion : Total size "\
+        warning_deter = "[INIT_POP] Deterministic proportion is too high, new proportion : Total size "\
                         + str(len(starting_pop)) + "\tDeterministic size " + str(len(deter_pop)) + "\tRandom size "\
                         + str(len(rdm_pop))
         warnings.formatwarning = custom_formatwarning
-        warnings.warn(warning_title, Warning)
+        warnings.warn(warning_deter, Warning)
     return starting_pop
+
+
+def is_population_size_correct(nb_jobs, pop_init_size):
+    """
+    Check if the desired size of the population is lower than the size of all the combinations
+    :param nb_jobs: number of jobs in the flow shop
+    :param pop_init_size: desired size of the initial population
+    :return: boolean true if the desired size is correct
+    """
+    factorial_part = 1
+    for i in range(1, nb_jobs+1):
+        factorial_part *= i
+        if pop_init_size < factorial_part:
+            return True
+    return False
 
 
 def random_initial_pop(flow_shop, rdm_size):
@@ -69,8 +88,8 @@ def deterministic_initial_pop(flow_shop, deter_size, best_deter):
     Generates deterministically the initial population
     :param flow_shop: an instance of the flow shop permutation problem
     :param deter_size: number of element in the initial population to generate
-    :param best_deter:
-    :return:
+    :param best_deter: if true, select the initial population by scheduling duration, else random selection
+    :return: the deterministic part of the initial population for the memetic algorithm
     """
     all_deterministic_seq = []
     neh_seq = neh_order(flow_shop)
@@ -88,9 +107,9 @@ def deterministic_initial_pop(flow_shop, deter_size, best_deter):
     if best_deter:
         all_deterministic_ordo = []
         for seq in all_deterministic_seq:
-            ordo = Ordonnancement(flow_shop.nb_machines)
-            ordo.ordonnancer_liste_job(seq)
-            all_deterministic_ordo.append(ordo)
+            sched = Ordonnancement(flow_shop.nb_machines)
+            sched.ordonnancer_liste_job(seq)
+            all_deterministic_ordo.append(sched)
         sorted_scheduling = sorted(all_deterministic_ordo, key=lambda o: o.duree(), reverse=False)
         if deter_size > len(sorted_scheduling):
             deter_pop = sorted_scheduling
@@ -102,9 +121,9 @@ def deterministic_initial_pop(flow_shop, deter_size, best_deter):
         else:
             seq_deter_sample = random.sample(all_deterministic_seq, deter_size)
         for seq in seq_deter_sample:
-            ordo = Ordonnancement(flow_shop.nb_machines)
-            ordo.ordonnancer_liste_job(seq)
-            deter_pop.append(ordo)
+            sched = Ordonnancement(flow_shop.nb_machines)
+            sched.ordonnancer_liste_job(seq)
+            deter_pop.append(sched)
     return deter_pop
 
 
@@ -136,7 +155,7 @@ def johnson_rule_order(flow_shop, sum_index):
     Schedule a flow shop following the Johnson rule
     :param flow_shop: an instance of the flow shop permutation problem
     :param sum_index: splinting tasks in two groups at this index
-    :return:
+    :return: return the scheduling of flow_shop following the johnson rule at sum_index
     """
     list_to_order = []
     for j in flow_shop.l_job:
