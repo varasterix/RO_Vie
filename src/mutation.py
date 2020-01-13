@@ -1,6 +1,6 @@
 import random
 import copy
-from ordonnancement import Ordonnancement
+from src.ordonnancement import Ordonnancement
 
 """
 This python file implements the mutation step in memetic/genetic algorithms for an instance of the flow-shop permutation 

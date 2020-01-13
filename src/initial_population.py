@@ -2,7 +2,7 @@ import copy
 import math
 import random
 import warnings
-from ordonnancement import Ordonnancement
+from src.ordonnancement import Ordonnancement
 
 MAXINT = 10000
 
@@ -35,7 +35,7 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
     if len(deter_pop) < deter_size:
-        warning_title = "[INIT_POP] Deterministic proportion is too high, new proportion : \nTotal size "\
+        warning_title = "[INIT_POP] Deterministic proportion is too high, new proportion : Total size "\
                         + str(len(starting_pop)) + "\tDeterministic size " + str(len(deter_pop)) + "\tRandom size "\
                         + str(len(rdm_pop))
         warnings.formatwarning = custom_formatwarning
