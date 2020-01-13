@@ -6,8 +6,7 @@
 __author__ = 'Chams Lahlou'
 __date__ = 'Octobre 2019'
 
-import job
-import ordonnancement
+from src import job
 
 
 class Flowshop:
