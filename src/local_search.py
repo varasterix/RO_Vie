@@ -1,5 +1,9 @@
 import copy
-from ordonnancement import Ordonnancement
+from src.ordonnancement import Ordonnancement
+
+
+def local_search(population):
+    return population
 
 
 def swap(i, j, scheduling):
