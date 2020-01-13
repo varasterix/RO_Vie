@@ -3,7 +3,7 @@ import copy
 from src.job import Job
 from src.ordonnancement import Ordonnancement
 from src.flowshop import Flowshop
-from src.local_search import local_search_swap, local_search_insert, swap
+from src.local_search import local_search_swap, local_search_insert, swap, local_search
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])
@@ -20,6 +20,17 @@ initial_scheduling.ordonnancer_liste_job([job_1, job_2, job_3, job_4, job_5])
 
 
 class TestSolutionLocalSearchClassMethods(unittest.TestCase):
+    def test_local_search(self):
+        initial_pop = [scheduling_1, scheduling_2, initial_scheduling]
+        new_pop = local_search(flow_shop, initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
+                               maximum_nb_iterations=20)
+        self.assertEqual(len(initial_pop), len(new_pop))
+        for sched in new_pop:
+            self.assertEqual(len(sched.sequence()), 5)
+            self.assertEqual(sched.has_duplicate(), False)
+            for job in [job_1, job_2, job_3, job_4, job_5]:
+                self.assertIn(job, sched.sequence())
+
     def test_duration_ls_swap(self):
         new_scheduling_1 = local_search_swap(flow_shop, scheduling_1, 20)
         new_scheduling_2 = local_search_swap(flow_shop, scheduling_2, 20)
