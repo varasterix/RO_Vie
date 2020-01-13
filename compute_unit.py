@@ -9,7 +9,7 @@ visualise_results = 0  # boolean
 
 
 if __name__ == "__main__":
-    python_script = "solver.py"
+    python_script = "memetic_solver.py"
     solver_args = ["python", python_script, str(time_limit), flow_shop_file_path, parameters_file_path,
                    global_memetic_results_path, str(visualise_results)]
     subprocess.call(args=solver_args)
