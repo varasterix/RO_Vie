@@ -1,9 +1,30 @@
 import copy
+import random
 from src.ordonnancement import Ordonnancement
 
 
-def local_search(population):
-    return population
+def local_search(flowshop, population, maximum_nb_iterations, local_search_swap_prob, local_search_insert_prob):
+    """
+    Generates a new population by improving each scheduling with a local search method during the given maximum number
+    of iterations
+    :param flowshop: a Flowshop object
+    :param population: population of schedulings to improve with local search
+    :param maximum_nb_iterations: maximum number of iterations (explorations of a neighborhood) to find a minimum local
+    :param local_search_swap_prob: probability of using the swap local search for a scheduling in the population
+    :param local_search_insert_prob: probability of using the insert local search for a scheduling in the population
+    :return: new population after local search improvements
+    """
+    sum_prob = local_search_swap_prob + local_search_insert_prob
+    local_search_swap_prob /= sum_prob
+    local_search_insert_prob /= sum_prob
+    new_population = []
+    for scheduling in population:
+        method_random = random.random()
+        new_scheduling = local_search_swap(flowshop, scheduling, maximum_nb_iterations) \
+            if method_random < local_search_swap_prob \
+            else local_search_insert(flowshop, scheduling, maximum_nb_iterations)
+        new_population.append(new_scheduling)
+    return new_population
 
 
 def swap(i, j, scheduling):
