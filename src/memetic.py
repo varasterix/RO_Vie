@@ -7,11 +7,8 @@
 # The 3 last stages are iterated several times
 
 import time
-import initial_population
-import solution_crossover
-import mutation
-import local_search
-from convergence import is_convergent
+from src import initial_population, mutation, local_search, solution_crossover, population_statistics
+from src.convergence import is_convergent
 
 
 def restart_population(population, flowshop, preserved_prop):
@@ -57,6 +54,7 @@ def memetic_heuristic(flowshop, parameters):
                                                 deter_prop=parameters['deter_prop'],
                                                 best_deter=parameters['best_deter'],
                                                 pop_init_size=parameters['pop_init_size'])
+    initial_statistics = population_statistics.population_statistics(population)
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
@@ -80,4 +78,4 @@ def memetic_heuristic(flowshop, parameters):
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
         iteration_time = time.time() - start_time_iteration
-    return list_best_sched, overall_best_scheduling
+    return list_best_sched, overall_best_scheduling, initial_statistics

@@ -1,8 +1,8 @@
 import unittest
-import initial_population as ip
-from job import Job
-from flowshop import Flowshop
-from ordonnancement import Ordonnancement
+from src import initial_population as ip
+from src.job import Job
+from src.flowshop import Flowshop
+from src.ordonnancement import Ordonnancement
 
 MAXINT = 10000
 
