@@ -1,6 +1,6 @@
 ﻿parameter_name;key;type;values;;;;;;;;;;
 time_limit;time_limit;float;0.5;;;;;;;;;;
-population_initial_size;pop_init_size;int;;;100;;;;;;;;
+population_initial_size;pop_init_size;int;100;;;;;;;;;;
 random_initial_population_proportion;random_prop;float;0;0.25;0.5;0.75;1;;;;;;
 deterministic_initial_population_proportion;deter_prop;float;0;0.25;0.5;0.75;1;;;;;;
 choose_best_individuals_in_deterministic_initial_population;best_deter;bool;0;1;;;;;;;;;

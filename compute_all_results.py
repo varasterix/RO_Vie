@@ -14,7 +14,7 @@ visualise_results = 0  # boolean
 
 
 if __name__ == "__main__":
-    python_script = "solver.py"
+    python_script = "memetic_solver.py"
     for dataSet in os.listdir(data_path):
         for instance in os.listdir(data_path + dataSet):
             flow_shop_file_path = data_path + dataSet + "/" + instance
