@@ -24,14 +24,17 @@ seq_3 = [job_1, job_4, job_3, job_2, job_5]
 
 class MyTestCase(unittest.TestCase):
     def test_initial_pop(self):
-        size = 100
+        size = 150
         init_pop = ip.initial_pop(flowshop_1, 0.5, 0.5, False, size)
-        self.assertEqual(len(init_pop), size)
         for sched in init_pop:
             self.assertEqual(len(sched.sequence()), 5)
             self.assertEqual(sched.has_duplicate(), False)
             for job in flowshop_1.l_job:
                 self.assertIn(job, sched.sequence())
+
+    def test_is_population_size_correct(self):
+        self.assertEqual(ip.is_population_size_correct(4, 12), True)
+        self.assertEqual(ip.is_population_size_correct(5, 176), False)
 
     def test_random_initial_pop(self):
         rdm_size = 100
