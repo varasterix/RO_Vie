@@ -1,9 +1,9 @@
 import unittest
 import copy
-from job import Job
-from ordonnancement import Ordonnancement
-from flowshop import Flowshop
-from local_search import local_search_swap, local_search_insert, swap
+from src.job import Job
+from src.ordonnancement import Ordonnancement
+from src.flowshop import Flowshop
+from src.local_search import local_search_swap, local_search_insert, swap
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])
