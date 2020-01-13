@@ -7,19 +7,16 @@
 # The 3 last stages are iterated several times
 
 import time
-import initial_population
-import solution_crossover
-import mutation
-import local_search
-from convergence import is_convergent
+from src import initial_population, mutation, local_search, solution_crossover, population_statistics
+from src.convergence import is_convergent
 
 
-def restart_population(population, preserved_prop, flowshop):
+def restart_population(population, flowshop, preserved_prop):
     """
     restart_population function called when the population is convergent
     :param population: population to restart
-    :param preserved_prop: proportion to preserve
     :param flowshop: instance of the flowshop problem
+    :param preserved_prop: proportion to preserve
     :return: the new population
     """
     preserved_size = int(len(population) * preserved_prop)
@@ -51,20 +48,22 @@ def memetic_heuristic(flowshop, parameters):
         """
     start_time = time.time()
     list_best_sched = []
+    overall_best_scheduling = None
     population = initial_population.initial_pop(flowshop,
                                                 random_prop=parameters['random_prop'],
                                                 deter_prop=parameters['deter_prop'],
                                                 best_deter=parameters['best_deter'],
                                                 pop_init_size=parameters['pop_init_size'])
+    initial_statistics = population_statistics.population_statistics(population)
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
         population = solution_crossover.crossover(flowshop,
                                                   population,
-                                                  parameters['cross_1_point_prob'],
-                                                  parameters['cross_2_points_prob'],
-                                                  parameters['cross_position_prob'],
-                                                  parameters['gentrification'])
+                                                  cross_1_point_prob=parameters['cross_1_point_prob'],
+                                                  cross_2_points_prob=parameters['cross_2_points_prob'],
+                                                  cross_position_prob=parameters['cross_position_prob'],
+                                                  gentrification=parameters['gentrification'])
         population = mutation.mutation(flowshop,
                                        population,
                                        mutation_swap_probability=parameters['swap_prob'],
@@ -72,7 +71,11 @@ def memetic_heuristic(flowshop, parameters):
         population = local_search.local_search(population)
         best_sched = min(population, key=lambda sched: sched.duree())
         list_best_sched.append(best_sched)
-        if is_convergent(population, parameters['entropy_threshold']):
-            population = restart_population(population, parameters['preserved_prop'], flowshop)
+        if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
+            overall_best_scheduling = best_sched
+        if is_convergent(population, threshold=parameters['entropy_threshold']):
+            population = restart_population(population,
+                                            flowshop,
+                                            preserved_prop=parameters['preserved_prop'])
         iteration_time = time.time() - start_time_iteration
-    return list_best_sched
+    return list_best_sched, overall_best_scheduling, initial_statistics

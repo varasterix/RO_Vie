@@ -1,0 +1,5 @@
+PARAMETER_GRID_SEARCH_PARAMETERS_PATH = "res/grid_search_parameters.csv"
+PARAMETER_GLOBAL_MEMETIC_RESULTS_PATH = "res/global_memetic_results.csv"
+PARAMETER_STORE_BEST_PARAMETERS_PATH = "res/best_parameters/"
+PARAMETER_DEFAULT_PARAMETERS_FILE_PATH = "res/default_test_parameters.txt"
+PARAMETER_DATA_PATH = "data/"
