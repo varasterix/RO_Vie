@@ -1,6 +1,6 @@
 import unittest
-from ordonnancement import Ordonnancement
-from job import Job
+from src.ordonnancement import Ordonnancement
+from src.job import Job
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])

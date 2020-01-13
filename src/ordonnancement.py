@@ -6,7 +6,7 @@
 __author__ = 'Chams Lahlou'
 __date__ = 'Octobre 2019'
 
-import job
+from src import job
 
 
 class Ordonnancement:
