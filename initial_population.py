@@ -21,6 +21,9 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     pop_max_size = math.factorial(flow_shop.nb_jobs)
     if pop_max_size < pop_init_size:
         pop_init_size = round(pop_max_size * 1 / 3)
+        warning_size = "[INIT_POP] Initial population size is too high, new size: " + str(pop_init_size)
+        warnings.formatwarning = custom_formatwarning
+        warnings.warn(warning_size, Warning)
 
     deter_size = round(deter_prop / (deter_prop + random_prop) * pop_init_size)
     deter_pop = []
@@ -35,11 +38,11 @@ def initial_pop(flow_shop, random_prop, deter_prop, best_deter=False, pop_init_s
     starting_pop = rdm_pop + deter_pop
     random.shuffle(starting_pop)
     if len(deter_pop) < deter_size:
-        warning_title = "[INIT_POP] Deterministic proportion is too high, new proportion : \nTotal size "\
+        warning_deter = "[INIT_POP] Deterministic proportion is too high, new proportion: \nTotal size "\
                         + str(len(starting_pop)) + "\tDeterministic size " + str(len(deter_pop)) + "\tRandom size "\
                         + str(len(rdm_pop))
         warnings.formatwarning = custom_formatwarning
-        warnings.warn(warning_title, Warning)
+        warnings.warn(warning_deter, Warning)
     return starting_pop
 
 
