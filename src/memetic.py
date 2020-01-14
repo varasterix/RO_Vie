@@ -66,9 +66,13 @@ def memetic_heuristic(flowshop, parameters):
                                                   gentrification=parameters['gentrification'])
         population = mutation.mutation(flowshop,
                                        population,
-                                       mutation_swap_probability=parameters['swap_prob'],
-                                       mutation_insert_probability=parameters['insert_prob'])
-        population = local_search.local_search(population)
+                                       mutation_swap_probability=parameters['mut_swap_prob'],
+                                       mutation_insert_probability=parameters['mut_insert_prob'])
+        population = local_search.local_search(flowshop,
+                                               population,
+                                               maximum_nb_iterations=parameters['ls_max_iterations'],
+                                               local_search_swap_prob=parameters['ls_swap_prob'],
+                                               local_search_insert_prob=parameters['ls_insert_prob'])
         best_sched = min(population, key=lambda sched: sched.duree())
         list_best_sched.append(best_sched)
         if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
