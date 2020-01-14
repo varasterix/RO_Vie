@@ -53,9 +53,9 @@ def memetic_heuristic(flowshop, parameters):
                                                 best_deter=parameters['best_deter'],
                                                 pop_init_size=parameters['pop_init_size'])
     initial_statistics = population_statistics.population_statistics(population)
-
+    list_statistics = [initial_statistics]
     overall_best_scheduling = min(population, key=lambda sched: sched.duree())
-    list_best_schedulings = [overall_best_scheduling]
+
     population = local_search.local_search(flowshop,
                                            population,
                                            maximum_nb_iterations=parameters['ls_max_iterations'],
@@ -74,9 +74,11 @@ def memetic_heuristic(flowshop, parameters):
                                        population,
                                        mutation_swap_probability=parameters['mut_swap_prob'],
                                        mutation_insert_probability=parameters['mut_insert_prob'])
+        statistics = population_statistics.population_statistics(population)
+        list_statistics.append(statistics)
         best_sched = min(population, key=lambda sched: sched.duree())
-        list_best_schedulings.append(best_sched)
-        if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
+
+        if overall_best_scheduling.duree() > best_sched.duree():
             overall_best_scheduling = best_sched
         if is_convergent(population, threshold=parameters['entropy_threshold']):
             population = restart_population(population,
@@ -88,4 +90,4 @@ def memetic_heuristic(flowshop, parameters):
                                                    local_search_swap_prob=parameters['ls_swap_prob'],
                                                    local_search_insert_prob=parameters['ls_insert_prob'])
         iteration_time = time.time() - start_time_iteration
-    return list_best_schedulings, overall_best_scheduling, initial_statistics
+    return list_statistics, overall_best_scheduling

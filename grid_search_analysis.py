@@ -25,10 +25,12 @@ for params in grid_search:
         (params['random_prop'] + params['deter_prop'] == 1.0)
     crossover_condition = \
         (params['cross_1_point_prob'] + params['cross_2_points_prob'] + params['cross_position_prob'] == 1.0)
-    if initial_population_condition and crossover_condition:
+    local_search_condition =\
+        (params['ls_swap_prob'] + params['ls_insert_prob'] == 1.0)
+    if initial_population_condition and crossover_condition and local_search_condition:
         print("--> " + str(params))
-        best_scheduling_list, best_scheduling, initial_statistics = memetic_heuristic(flow_shop_instance, params)
-        c_max_list = [scheduling.duree() for scheduling in best_scheduling_list]
+        list_statistics, best_scheduling = memetic_heuristic(flow_shop_instance, params)
+        c_max_list = [statistics[1] for statistics in list_statistics]
         best_c_max = best_scheduling.duree()
         first_epoch_best_c_max = c_max_list.index(best_c_max) + 1
         if best_params is None:
