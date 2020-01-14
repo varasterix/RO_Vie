@@ -23,9 +23,17 @@ seq_3 = [job_1, job_4, job_3, job_2, job_5]
 
 
 class MyTestCase(unittest.TestCase):
-    def test_initial_pop(self):
+    def test_initial_population_warnings(self):
+        size = 100
+        with self.assertWarns(Warning):  # Deterministic prop too high
+            ip.initial_pop(flowshop_1, 0.5, 0.5, False, size)
         size = 150
-        init_pop = ip.initial_pop(flowshop_1, 0.5, 0.5, False, size)
+        with self.assertWarns(Warning):  # Size too high
+            ip.initial_pop(flowshop_1, 1.0, 0.0, False, size)
+
+    def test_initial_pop(self):
+        size = 100
+        init_pop = ip.initial_pop(flowshop_1, 0.9, 0.1, False, size)
         for sched in init_pop:
             self.assertEqual(len(sched.sequence()), 5)
             self.assertEqual(sched.has_duplicate(), False)
