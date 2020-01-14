@@ -30,7 +30,7 @@ best_c_max = best_scheduling.duree()
 
 # Save results (in the csv files, in the plt figure and in the html visualisation file) IF a best solution is obtained
 # And show/print the results no matter the quality of the solution IF the boolean 'visualise_results' is true
-relative_gap = round(((best_c_max - best_known_solution) / best_known_solution), 4)  # round to 4 decimals
+relative_gap = round(((best_c_max - best_known_solution) / best_known_solution) * 100, 2)  # round to 2 decimals
 global_memetic_results, is_updated = update_global_memetic_results(global_memetic_results, file_name, best_c_max,
                                                                    relative_gap, initial_statistics[0],
                                                                    initial_statistics[1], initial_statistics[2],

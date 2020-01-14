@@ -47,14 +47,20 @@ def memetic_heuristic(flowshop, parameters):
         :return: the Ordonnancement object with the lowest duration
         """
     start_time = time.time()
-    list_best_sched = []
-    overall_best_scheduling = None
     population = initial_population.initial_pop(flowshop,
                                                 random_prop=parameters['random_prop'],
                                                 deter_prop=parameters['deter_prop'],
                                                 best_deter=parameters['best_deter'],
                                                 pop_init_size=parameters['pop_init_size'])
     initial_statistics = population_statistics.population_statistics(population)
+
+    overall_best_scheduling = min(population, key=lambda sched: sched.duree())
+    list_best_schedulings = [overall_best_scheduling]
+    population = local_search.local_search(flowshop,
+                                           population,
+                                           maximum_nb_iterations=parameters['ls_max_iterations'],
+                                           local_search_swap_prob=parameters['ls_swap_prob'],
+                                           local_search_insert_prob=parameters['ls_insert_prob'])
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
@@ -66,11 +72,10 @@ def memetic_heuristic(flowshop, parameters):
                                                   gentrification=parameters['gentrification'])
         population = mutation.mutation(flowshop,
                                        population,
-                                       mutation_swap_probability=parameters['swap_prob'],
-                                       mutation_insert_probability=parameters['insert_prob'])
-        population = local_search.local_search(population)
+                                       mutation_swap_probability=parameters['mut_swap_prob'],
+                                       mutation_insert_probability=parameters['mut_insert_prob'])
         best_sched = min(population, key=lambda sched: sched.duree())
-        list_best_sched.append(best_sched)
+        list_best_schedulings.append(best_sched)
         if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
             overall_best_scheduling = best_sched
         pop_init_size = parameters['pop_init_size']
@@ -88,5 +93,10 @@ def memetic_heuristic(flowshop, parameters):
             population = restart_population(population,
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
+            population = local_search.local_search(flowshop,
+                                                   population,
+                                                   maximum_nb_iterations=parameters['ls_max_iterations'],
+                                                   local_search_swap_prob=parameters['ls_swap_prob'],
+                                                   local_search_insert_prob=parameters['ls_insert_prob'])
         iteration_time = time.time() - start_time_iteration
-    return list_best_sched, overall_best_scheduling, initial_statistics
+    return list_best_schedulings, overall_best_scheduling, initial_statistics
