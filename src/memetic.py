@@ -73,7 +73,18 @@ def memetic_heuristic(flowshop, parameters):
         list_best_sched.append(best_sched)
         if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
             overall_best_scheduling = best_sched
-        if is_convergent(population, threshold=parameters['entropy_threshold']):
+        pop_init_size = parameters['pop_init_size']
+        if pop_init_size < 200:
+            entropy_threshold = 6
+        elif pop_init_size < 300:
+            entropy_threshold = 7
+        elif pop_init_size < 400:
+            entropy_threshold = 7.8
+        elif pop_init_size < 500:
+            entropy_threshold = 8.4
+        else:
+            entropy_threshold = 8.7
+        if is_convergent(population, threshold=entropy_threshold):
             population = restart_population(population,
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
