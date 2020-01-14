@@ -6,7 +6,7 @@
 __author__ = 'Chams Lahlou'
 __date__ = 'Octobre 2019'
 
-import job
+from src import job
 
 
 class Ordonnancement:
@@ -68,6 +68,17 @@ class Ordonnancement:
     def ordonnancer_liste_job(self, liste_jobs):
         for job in liste_jobs:
             self.ordonnancer_job(job)
+
+    def has_duplicate(self):
+        seq = self.sequence()
+        for i in range(len(seq) - 1):
+            for j in range(i + 1, len(seq)):
+                if seq[i] == (seq[j]):
+                    return True
+        return False
+
+    def __str__(self):
+        return str([str(job) for job in self.sequence()])
 
     def __eq__(self, other):
         if not isinstance(other, Ordonnancement):  # don't attempt to compare against unrelated types
