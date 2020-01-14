@@ -25,11 +25,12 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         new_pop = local_search(flow_shop, initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
                                maximum_nb_iterations=20)
         self.assertEqual(len(initial_pop), len(new_pop))
-        for sched in new_pop:
-            self.assertEqual(len(sched.sequence()), 5)
-            self.assertEqual(sched.has_duplicate(), False)
+        self.assertTrue(sum([sched.duree() for sched in new_pop]) < sum([sched.duree() for sched in initial_pop]))
+        for scheduling in new_pop:
+            self.assertEqual(len(scheduling.sequence()), 5)
+            self.assertEqual(scheduling.has_duplicate(), False)
             for job in [job_1, job_2, job_3, job_4, job_5]:
-                self.assertIn(job, sched.sequence())
+                self.assertIn(job, scheduling.sequence())
 
     def test_duration_ls_swap(self):
         new_scheduling_1 = local_search_swap(flow_shop, scheduling_1, 20)
