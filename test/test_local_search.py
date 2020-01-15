@@ -3,7 +3,8 @@ import copy
 from src.job import Job
 from src.ordonnancement import Ordonnancement
 from src.flowshop import Flowshop
-from src.local_search import local_search_swap, local_search_insert, swap, local_search
+from src.local_search import local_search_swap, local_search_insert, swap, local_search, create_swap_neighbors, \
+    create_insert_neighbors
 
 job_1 = Job(1, [1, 1, 1, 1, 10])
 job_2 = Job(2, [1, 1, 1, 4, 8])
@@ -22,8 +23,11 @@ initial_scheduling.ordonnancer_liste_job([job_1, job_2, job_3, job_4, job_5])
 class TestSolutionLocalSearchClassMethods(unittest.TestCase):
     def test_local_search(self):
         initial_pop = [scheduling_1, scheduling_2, initial_scheduling]
-        new_pop = local_search(flow_shop, initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
-                               maximum_nb_iterations=20, max_neighbors_nb=50)
+        swap_neighbors = create_swap_neighbors(flow_shop)
+        insert_neighbors = create_insert_neighbors(flow_shop)
+        new_pop = local_search(initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
+                               maximum_nb_iterations=20, max_neighbors_nb=50, swap_neighbors=swap_neighbors,
+                               insert_neighbors=insert_neighbors)
         self.assertEqual(len(initial_pop), len(new_pop))
         self.assertTrue(sum([sched.duree() for sched in new_pop]) < sum([sched.duree() for sched in initial_pop]))
         for scheduling in new_pop:
@@ -33,8 +37,9 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
                 self.assertIn(job, scheduling.sequence())
 
     def test_duration_ls_swap(self):
-        new_scheduling_1 = local_search_swap(flow_shop, scheduling_1, 20, max_neighbors_nb=50)
-        new_scheduling_2 = local_search_swap(flow_shop, scheduling_2, 20, max_neighbors_nb=50)
+        swap_neighbors = create_swap_neighbors(flow_shop)
+        new_scheduling_1 = local_search_swap(scheduling_1, 20, max_neighbors_nb=50, neighbors=swap_neighbors)
+        new_scheduling_2 = local_search_swap(scheduling_2, 20, max_neighbors_nb=50, neighbors=swap_neighbors)
         self.assertTrue(new_scheduling_1.duree() <= scheduling_1.duree())
         self.assertTrue(new_scheduling_2.duree() <= scheduling_2.duree())
         self.assertEqual(len(new_scheduling_1.sequence()), 5)
@@ -44,8 +49,9 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
             self.assertIn(job, new_scheduling_2.sequence())
 
     def test_duration_ls_insert(self):
-        new_scheduling_1 = local_search_insert(flow_shop, scheduling_1, 20, max_neighbors_nb=50)
-        new_scheduling_2 = local_search_insert(flow_shop, scheduling_2, 20, max_neighbors_nb=50)
+        insert_neighbors = create_insert_neighbors(flow_shop)
+        new_scheduling_1 = local_search_insert(scheduling_1, 20, max_neighbors_nb=50, neighbors=insert_neighbors)
+        new_scheduling_2 = local_search_insert(scheduling_2, 20, max_neighbors_nb=50, neighbors=insert_neighbors)
         self.assertTrue(new_scheduling_1.duree() <= scheduling_1.duree())
         self.assertTrue(new_scheduling_2.duree() <= scheduling_2.duree())
         self.assertEqual(len(new_scheduling_1.sequence()), 5)
@@ -124,10 +130,12 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         job_a = Job(0, [1, 5])
         job_b = Job(1, [5, 1])
         flow_shop_2 = Flowshop(2, 2, [job_a, job_b])
+        swap_neighbors = create_swap_neighbors(flow_shop_2)
+        insert_neighbors = create_insert_neighbors(flow_shop_2)
         scheduling = Ordonnancement(job_a.nb_op)
         scheduling.ordonnancer_liste_job([job_b, job_a])
-        new_scheduling_swap = local_search_swap(flow_shop_2, scheduling, 1, max_neighbors_nb=50)
-        new_scheduling_insert = local_search_insert(flow_shop_2, scheduling, 1, max_neighbors_nb=50)
+        new_scheduling_swap = local_search_swap(scheduling, 1, max_neighbors_nb=50, neighbors=swap_neighbors)
+        new_scheduling_insert = local_search_insert(scheduling, 1, max_neighbors_nb=50, neighbors=insert_neighbors)
         self.assertTrue(scheduling.duree() == 11)
         self.assertTrue(new_scheduling_swap.duree() < scheduling.duree())
         self.assertTrue(new_scheduling_insert.duree() < scheduling.duree())
