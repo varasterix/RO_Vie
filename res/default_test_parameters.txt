@@ -1,6 +1,6 @@
 random_prop float 0.9
 deter_prop float 0.1
-best_deter bool 0
+best_deter bool 1
 pop_init_size int 100
 cross_1_point_prob float 0.25
 cross_2_points_prob float 0.25
