@@ -9,7 +9,7 @@ gentrification bool 0
 mut_swap_prob float 0.2
 mut_insert_prob float 0.2
 entropy_threshold float 5.7
-preserved_prop float 0.2
+preserved_prop float 0.1
 ls_swap_prob float 0.5
 ls_insert_prob float 0.5
 ls_max_iterations int 2
