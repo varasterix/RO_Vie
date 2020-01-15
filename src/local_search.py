@@ -96,7 +96,7 @@ def local_search_insert(flowshop, scheduling, iteration, max_neighbors_nb):
     duration_candidate = candidate.duree()
     neighbors = []
     for i in range(nb_jobs-1):
-        for j in range(i, nb_jobs):
+        for j in range(i+1, nb_jobs):
             neighbors.append([i, j])
     if max_neighbors_nb > len(neighbors):
         max_neighbors_nb = len(neighbors)
