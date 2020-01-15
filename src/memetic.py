@@ -77,7 +77,6 @@ def memetic_heuristic(flowshop, parameters):
                                        mutation_insert_probability=parameters['mut_insert_prob'])
         statistics = population_statistics.population_statistics(population)
         list_statistics.append(statistics)
-        best_sched = min(population, key=lambda sched: sched.duree())
         restart = False
         # if the best duration doesn't improve much over 10 iterations, the population is restarted
         if min([list_statistics[k][1] for k in range(len(list_statistics)-10, len(list_statistics))]) >= 0.98 * \
