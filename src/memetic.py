@@ -55,6 +55,7 @@ def memetic_heuristic(flowshop, parameters):
     initial_statistics = population_statistics.population_statistics(population)
     list_statistics = [initial_statistics]
     overall_best_scheduling = min(population, key=lambda sched: sched.duree())
+    iterations_where_restart = []
 
     population = local_search.local_search(flowshop,
                                            population,
@@ -62,8 +63,10 @@ def memetic_heuristic(flowshop, parameters):
                                            local_search_swap_prob=parameters['ls_swap_prob'],
                                            local_search_insert_prob=parameters['ls_insert_prob'],
                                            max_neighbors_nb=parameters['max_neighbors_nb'])
+    index = 0
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
+        index += 1
         start_time_iteration = time.time()
         population = solution_crossover.crossover(flowshop,
                                                   population,
@@ -94,6 +97,7 @@ def memetic_heuristic(flowshop, parameters):
         else:
             entropy_threshold = 8.7
         if is_convergent(population, threshold=entropy_threshold) or restart:
+            iterations_where_restart.append(index)
             population = restart_population(population,
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
