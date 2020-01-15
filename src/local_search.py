@@ -72,9 +72,10 @@ def local_search_swap(scheduling, iteration, max_neighbors_nb, neighbors):
 
     for a in range(0, iteration):
         visited_neighbors = neighbors.copy()
-        random.shuffle(visited_neighbors)
         for k in range(max_neighbors_nb):
-            i, j = visited_neighbors[k][0], visited_neighbors[k][1]
+            index = random.randint(0, len(visited_neighbors) - 1)
+            i, j = visited_neighbors[index][0], visited_neighbors[index][1]
+            visited_neighbors.pop(index)
             temp = copy.copy(scheduling)
             ls_swap = swap(i, j, temp)
             duration_temp = ls_swap.duree()
@@ -124,9 +125,10 @@ def local_search_insert(scheduling, iteration, max_neighbors_nb, neighbors):
 
     for a in range(0, iteration):
         visited_neighbors = neighbors.copy()
-        random.shuffle(visited_neighbors)
         for k in range(max_neighbors_nb):
-            i, j = visited_neighbors[k][0], visited_neighbors[k][1]
+            index = random.randint(0, len(visited_neighbors) - 1)
+            i, j = visited_neighbors[index][0], visited_neighbors[index][1]
+            visited_neighbors.pop(index)
             temp = copy.copy(scheduling)
             sequence = temp.sequence().copy()
             ls_insert = sequence[i]
