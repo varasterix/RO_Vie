@@ -1,6 +1,20 @@
 import math
 
 
+def initialize_threshold(pop_init_size):
+    if pop_init_size < 200:
+        entropy_threshold = 5.7
+    elif pop_init_size < 300:
+        entropy_threshold = 7
+    elif pop_init_size < 400:
+        entropy_threshold = 7.8
+    elif pop_init_size < 500:
+        entropy_threshold = 8.4
+    else:
+        entropy_threshold = 8.7
+    return entropy_threshold
+
+
 def shannon_entropy(population):
     """
     calculates the shannon entropy of the population
