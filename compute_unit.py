@@ -1,11 +1,11 @@
 import subprocess
 import src.constants as constants
 
-time_limit = 0.1
-flow_shop_file_path = 'data/dataset2/tai42.txt'
+time_limit = 0.5
+flow_shop_file_path = 'data/dataset1/tai31.txt'
 parameters_file_path = constants.PARAMETER_DEFAULT_PARAMETERS_FILE_PATH
 global_memetic_results_path = constants.PARAMETER_GLOBAL_MEMETIC_RESULTS_PATH
-visualise_results = 0  # boolean
+visualise_results = 1  # boolean
 
 
 if __name__ == "__main__":
