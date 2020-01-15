@@ -95,9 +95,10 @@ def local_search_insert(flowshop, scheduling, iteration, max_neighbors_nb):
     duration = scheduling.duree()
     duration_candidate = candidate.duree()
     neighbors = []
-    for i in range(nb_jobs-1):
-        for j in range(i+1, nb_jobs):
-            neighbors.append([i, j])
+    for i in range(nb_jobs):
+        for j in range(nb_jobs):
+            if j != i and (j != i - 1 or i == 0):
+                neighbors.append([i, j])
     if max_neighbors_nb > len(neighbors):
         max_neighbors_nb = len(neighbors)
 
@@ -106,18 +107,17 @@ def local_search_insert(flowshop, scheduling, iteration, max_neighbors_nb):
         random.shuffle(visited_neighbors)
         for k in range(max_neighbors_nb):
             i, j = visited_neighbors[k][0], visited_neighbors[k][1]
-            if j != i and (j != i-1 or i == 0):
-                temp = copy.copy(scheduling)
-                sequence = temp.sequence().copy()
-                ls_insert = sequence[i]
-                sequence.remove(ls_insert)
-                sequence.insert(j, ls_insert)
-                new_scheduling = Ordonnancement(temp.nb_machines)
-                new_scheduling.ordonnancer_liste_job(sequence)
-                duration_temp = new_scheduling.duree()
-                if duration_temp < duration_candidate:
-                    duration_candidate = duration_temp
-                    candidate = new_scheduling
+            temp = copy.copy(scheduling)
+            sequence = temp.sequence().copy()
+            ls_insert = sequence[i]
+            sequence.remove(ls_insert)
+            sequence.insert(j, ls_insert)
+            new_scheduling = Ordonnancement(temp.nb_machines)
+            new_scheduling.ordonnancer_liste_job(sequence)
+            duration_temp = new_scheduling.duree()
+            if duration_temp < duration_candidate:
+                duration_candidate = duration_temp
+                candidate = new_scheduling
         if duration > duration_candidate:
             scheduling = candidate
             duration = duration_candidate
