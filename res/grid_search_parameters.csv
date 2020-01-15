@@ -15,3 +15,4 @@ preserved_proportion_in_restart_population;preserved_prop;float;0;0.25;0.5;0.75;
 local_search_swap_probability;ls_swap_prob;float;0.0;0.5;1.0;;;;;;;;
 local_search_insert_probability;ls_insert_prob;float;0.0;0.5;1.0;;;;;;;;
 local_search_max_nb_iterations;ls_max_iterations;int;5;10;;;;;;;;;
+maximum_nb_of_neighbors_explored;max_neighbors_nb;int;100;;;;;;;;;;
