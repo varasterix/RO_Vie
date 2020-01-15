@@ -102,6 +102,7 @@ def memetic_heuristic(flowshop, parameters):
                                                    population,
                                                    maximum_nb_iterations=parameters['ls_max_iterations'],
                                                    local_search_swap_prob=parameters['ls_swap_prob'],
-                                                   local_search_insert_prob=parameters['ls_insert_prob'])
+                                                   local_search_insert_prob=parameters['ls_insert_prob'],
+                                                   max_neighbors_nb=100)
         iteration_time = time.time() - start_time_iteration
     return list_statistics, overall_best_scheduling
