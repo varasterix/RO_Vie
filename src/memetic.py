@@ -60,7 +60,8 @@ def memetic_heuristic(flowshop, parameters):
                                            population,
                                            maximum_nb_iterations=parameters['ls_max_iterations'],
                                            local_search_swap_prob=parameters['ls_swap_prob'],
-                                           local_search_insert_prob=parameters['ls_insert_prob'])
+                                           local_search_insert_prob=parameters['ls_insert_prob'],
+                                           max_neighbors_nb=100)
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         start_time_iteration = time.time()
@@ -76,11 +77,14 @@ def memetic_heuristic(flowshop, parameters):
                                        mutation_insert_probability=parameters['mut_insert_prob'])
         best_sched = min(population, key=lambda sched: sched.duree())
         list_best_schedulings.append(best_sched)
+        restart = False
+        if min([sched.duree() for sched in population]) >= 0.98 * max([sched.duree() for sched in population]):
+            restart = True
         if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
             overall_best_scheduling = best_sched
         pop_init_size = parameters['pop_init_size']
         if pop_init_size < 200:
-            entropy_threshold = 6
+            entropy_threshold = 5.7
         elif pop_init_size < 300:
             entropy_threshold = 7
         elif pop_init_size < 400:
@@ -89,7 +93,7 @@ def memetic_heuristic(flowshop, parameters):
             entropy_threshold = 8.4
         else:
             entropy_threshold = 8.7
-        if is_convergent(population, threshold=entropy_threshold):
+        if is_convergent(population, threshold=entropy_threshold) or restart:
             population = restart_population(population,
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
@@ -97,6 +101,7 @@ def memetic_heuristic(flowshop, parameters):
                                                    population,
                                                    maximum_nb_iterations=parameters['ls_max_iterations'],
                                                    local_search_swap_prob=parameters['ls_swap_prob'],
-                                                   local_search_insert_prob=parameters['ls_insert_prob'])
+                                                   local_search_insert_prob=parameters['ls_insert_prob'],
+                                                   max_neighbors_nb=100)
         iteration_time = time.time() - start_time_iteration
     return list_best_schedulings, overall_best_scheduling, initial_statistics

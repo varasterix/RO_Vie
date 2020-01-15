@@ -23,7 +23,7 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
     def test_local_search(self):
         initial_pop = [scheduling_1, scheduling_2, initial_scheduling]
         new_pop = local_search(flow_shop, initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
-                               maximum_nb_iterations=20)
+                               maximum_nb_iterations=20, max_neighbors_nb=50)
         self.assertEqual(len(initial_pop), len(new_pop))
         self.assertTrue(sum([sched.duree() for sched in new_pop]) < sum([sched.duree() for sched in initial_pop]))
         for scheduling in new_pop:
@@ -33,8 +33,8 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
                 self.assertIn(job, scheduling.sequence())
 
     def test_duration_ls_swap(self):
-        new_scheduling_1 = local_search_swap(flow_shop, scheduling_1, 20)
-        new_scheduling_2 = local_search_swap(flow_shop, scheduling_2, 20)
+        new_scheduling_1 = local_search_swap(flow_shop, scheduling_1, 20, max_neighbors_nb=50)
+        new_scheduling_2 = local_search_swap(flow_shop, scheduling_2, 20, max_neighbors_nb=50)
         self.assertTrue(new_scheduling_1.duree() <= scheduling_1.duree())
         self.assertTrue(new_scheduling_2.duree() <= scheduling_2.duree())
         self.assertEqual(len(new_scheduling_1.sequence()), 5)
@@ -44,8 +44,8 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
             self.assertIn(job, new_scheduling_2.sequence())
 
     def test_duration_ls_insert(self):
-        new_scheduling_1 = local_search_insert(flow_shop, scheduling_1, 20)
-        new_scheduling_2 = local_search_insert(flow_shop, scheduling_2, 20)
+        new_scheduling_1 = local_search_insert(flow_shop, scheduling_1, 20, max_neighbors_nb=50)
+        new_scheduling_2 = local_search_insert(flow_shop, scheduling_2, 20, max_neighbors_nb=50)
         self.assertTrue(new_scheduling_1.duree() <= scheduling_1.duree())
         self.assertTrue(new_scheduling_2.duree() <= scheduling_2.duree())
         self.assertEqual(len(new_scheduling_1.sequence()), 5)
@@ -126,8 +126,8 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         flow_shop_2 = Flowshop(2, 2, [job_a, job_b])
         scheduling = Ordonnancement(job_a.nb_op)
         scheduling.ordonnancer_liste_job([job_b, job_a])
-        new_scheduling_swap = local_search_swap(flow_shop_2, scheduling, 1)
-        new_scheduling_insert = local_search_insert(flow_shop_2, scheduling, 1)
+        new_scheduling_swap = local_search_swap(flow_shop_2, scheduling, 1, max_neighbors_nb=50)
+        new_scheduling_insert = local_search_insert(flow_shop_2, scheduling, 1, max_neighbors_nb=50)
         self.assertTrue(scheduling.duree() == 11)
         self.assertTrue(new_scheduling_swap.duree() < scheduling.duree())
         self.assertTrue(new_scheduling_insert.duree() < scheduling.duree())
