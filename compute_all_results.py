@@ -3,14 +3,14 @@ import subprocess
 from src.utils import load_best_parameters
 import src.constants as constants
 
-time_limit = 1
+time_limit = 4
 grid_search_parameters_path = constants.PARAMETER_GRID_SEARCH_PARAMETERS_PATH
 global_memetic_results_path = constants.PARAMETER_GLOBAL_MEMETIC_RESULTS_PATH
 store_best_parameters_path = constants.PARAMETER_STORE_BEST_PARAMETERS_PATH
 use_best_parameters = 0  # boolean
 default_parameters_file_path = constants.PARAMETER_DEFAULT_PARAMETERS_FILE_PATH
 data_path = constants.PARAMETER_DATA_PATH
-visualise_results = 0  # boolean
+visualise_results = 1  # boolean
 
 
 if __name__ == "__main__":
