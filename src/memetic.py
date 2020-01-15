@@ -43,8 +43,8 @@ def memetic_heuristic(flowshop, parameters):
         :param parameters: dict of parameters used in the function.
             It must contain the following keys: 'random_prop', 'deter_prop', 'best_deter', 'pop_init_size',
             'time_limit', 'cross_1_point_prob', 'cross_2_points_prob','cross_position_prob', 'gentrification',
-            'mut_swap_prob', 'mut_insert_prob', 'entropy_threshold', 'preserved_prop', 'ls_max_iterations',
-            'ls_swap_prob', 'ls_insert_prob', 'max_neighbors_nb', 'use_ls'
+            'mut_swap_prob', 'mut_insert_prob', 'preserved_prop', 'ls_max_iterations', 'ls_swap_prob', 'ls_insert_prob',
+            'max_neighbors_nb', 'use_ls'
         :return: the statistics (mean, min, max) over the generations of the function memetic_heuristic, the scheduling
         (Ordonnancement object) with the lowest duration, the list of iterations where a restart happened
         """
