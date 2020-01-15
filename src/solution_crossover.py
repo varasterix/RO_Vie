@@ -91,7 +91,6 @@ def crossover_1_point(sched1, sched2, point1):
     :param point1: separation point to swap the sub-sequences, INTEGER between 0 and nb_jobs
     :return population: the two children schedulings (Ordonnancement objects)
     """
-    nb_jobs = len(sched1.sequence())
     seq1 = sched1.sequence().copy()
     seq2 = sched2.sequence().copy()
     seq11 = seq1[0:point1]
