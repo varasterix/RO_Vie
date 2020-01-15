@@ -93,8 +93,8 @@ def memetic_heuristic(flowshop, parameters):
         restart = False
         # if the best duration doesn't improve much over 10 iterations, the population is restarted
         if len(list_statistics) > 9 and \
-            min([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]) >= 0.98 \
-                * max([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]):
+            min([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]) >= \
+                max([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]):
             restart = True
         if is_convergent(population, threshold=entropy_threshold) or restart:
             iterations_where_restart.append(index)
