@@ -10,7 +10,6 @@ cross_1_point_probability;cross_1_point_prob;float;0.25;;;;;;;;;;
 cross_2_points_probability;cross_2_points_prob;float;0.25;;;;;;;;;;
 cross_position_probability;cross_position_prob;float;0.5;;;;;;;;;;
 gentrify_before_reproduction;gentrification;bool;0;1;;;;;;;;;
-entropy_threshold;entropy_threshold;float;10;;;;;;;;;;
 preserved_proportion_in_restart_population;preserved_prop;float;0;0.25;0.5;0.75;;;;;;;
 use_local_search;use_ls;bool;0;1;;;;;;;;;
 local_search_swap_probability;ls_swap_prob;float;0.0;0.5;1.0;;;;;;;;
