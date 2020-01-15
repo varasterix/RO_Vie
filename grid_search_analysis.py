@@ -29,7 +29,7 @@ for params in grid_search:
         (params['ls_swap_prob'] + params['ls_insert_prob'] == 1.0)
     if initial_population_condition and crossover_condition and local_search_condition:
         print("--> " + str(params))
-        list_statistics, best_scheduling = memetic_heuristic(flow_shop_instance, params)
+        list_statistics, best_scheduling, iterations_where_restart = memetic_heuristic(flow_shop_instance, params)
         c_max_list = [statistics[1] for statistics in list_statistics]
         best_c_max = best_scheduling.duree()
         first_epoch_best_c_max = c_max_list.index(best_c_max) + 1
