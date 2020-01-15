@@ -79,11 +79,10 @@ def memetic_heuristic(flowshop, parameters):
         list_statistics.append(statistics)
         best_sched = min(population, key=lambda sched: sched.duree())
         restart = False
+        # if the best duration doesn't improve much over 10 iterations, the population is restarted
         if min([list_statistics[k][1] for k in range(len(list_statistics)-10, len(list_statistics))]) >= 0.98 * \
                 max([list_statistics[k][1] for k in range(len(list_statistics)-10, len(list_statistics))]):
             restart = True
-        if overall_best_scheduling is None or overall_best_scheduling.duree() > best_sched.duree():
-            overall_best_scheduling = best_sched
         pop_init_size = parameters['pop_init_size']
         if pop_init_size < 200:
             entropy_threshold = 5.7
