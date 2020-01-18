@@ -11,6 +11,27 @@ from src import initial_population, mutation, local_search, solution_crossover, 
 from src.convergence import is_convergent, initialize_threshold
 
 
+def update_population(population, flowshop, parameters):
+    """
+    update_population function called when building a new generation of population
+    :param population: population to update
+    :param flowshop: instance of the flowshop problem
+    :param parameters: dictionary of parameters used in the function
+    :return: the updated population
+    """
+    population = solution_crossover.crossover(flowshop,
+                                              population,
+                                              cross_1_point_prob=parameters['cross_1_point_prob'],
+                                              cross_2_points_prob=parameters['cross_2_points_prob'],
+                                              cross_position_prob=parameters['cross_position_prob'],
+                                              gentrification=parameters['gentrification'])
+    population = mutation.mutation(flowshop,
+                                   population,
+                                   mutation_swap_probability=parameters['mut_swap_prob'],
+                                   mutation_insert_probability=parameters['mut_insert_prob'])
+    return population
+
+
 def restart_population(population, flowshop, preserved_prop):
     """
     restart_population function called when the population is convergent
@@ -75,27 +96,21 @@ def memetic_heuristic(flowshop, parameters):
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         index += 1
         start_time_iteration = time.time()
-        population = solution_crossover.crossover(flowshop,
-                                                  population,
-                                                  cross_1_point_prob=parameters['cross_1_point_prob'],
-                                                  cross_2_points_prob=parameters['cross_2_points_prob'],
-                                                  cross_position_prob=parameters['cross_position_prob'],
-                                                  gentrification=parameters['gentrification'])
-        population = mutation.mutation(flowshop,
-                                       population,
-                                       mutation_swap_probability=parameters['mut_swap_prob'],
-                                       mutation_insert_probability=parameters['mut_insert_prob'])
+        population = update_population(population, flowshop, parameters)
         best_sched = min(population, key=lambda sched: sched.duree())
+
         if overall_best_scheduling.duree() > best_sched.duree():
             overall_best_scheduling = best_sched
         statistics = population_statistics.population_statistics(population)
         list_statistics.append(statistics)
+
         restart = False
         # if the best duration doesn't improve much over 10 iterations, the population is restarted
         if len(list_statistics) > 9 and \
             min([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]) >= \
                 max([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]):
             restart = True
+
         if is_convergent(population, threshold=entropy_threshold) or restart:
             iterations_where_restart.append(index)
             population = restart_population(population,
