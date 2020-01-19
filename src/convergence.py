@@ -28,7 +28,6 @@ def shannon_entropy(population):
             distinct_sched.append(sched)
             pi = population.count(sched) / len(population)
             entropy -= pi * math.log(pi, 2)
-    print(entropy)
     return entropy
 
 
