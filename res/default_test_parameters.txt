@@ -13,5 +13,5 @@ preserved_prop float 0.1
 use_ls bool 1
 ls_swap_prob float 1.0
 ls_insert_prob float 0
-ls_max_iterations int 1
-max_neighbors_nb int 100
+ls_max_iterations int 2
+max_neighbors_nb int 300
