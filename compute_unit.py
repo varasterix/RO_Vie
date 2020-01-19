@@ -1,8 +1,8 @@
 import subprocess
 import src.constants as constants
 
-time_limit = 10
-flow_shop_file_path = 'data/dataset2/tai22.txt'
+time_limit = 5
+flow_shop_file_path = 'data/dataset2/tai32.txt'
 parameters_file_path = constants.PARAMETER_DEFAULT_PARAMETERS_FILE_PATH
 global_memetic_results_path = constants.PARAMETER_GLOBAL_MEMETIC_RESULTS_PATH
 visualise_results = 1  # boolean
