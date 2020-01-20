@@ -11,12 +11,14 @@ from src import initial_population, mutation, local_search, solution_crossover, 
 from src.convergence import is_convergent, initialize_threshold
 
 
-def update_population(population, flowshop, parameters):
+def update_population(population, flowshop, parameters, swap_neighbors, insert_neighbors):
     """
     update_population function called when building a new generation of population
     :param population: population to update
     :param flowshop: instance of the flowshop problem
     :param parameters: dictionary of parameters used in the function
+    :param swap_neighbors: the list of neighbors for the swap method
+    :param insert_neighbors: the list of neighbors for the insert method
     :return: the updated population
     """
     population = solution_crossover.crossover(flowshop,
@@ -29,6 +31,15 @@ def update_population(population, flowshop, parameters):
                                    population,
                                    mutation_swap_probability=parameters['mut_swap_prob'],
                                    mutation_insert_probability=parameters['mut_insert_prob'])
+    if parameters['use_ls']:
+        population = local_search.local_search(population,
+                                               maximum_nb_iterations=parameters['ls_max_iterations'],
+                                               local_search_swap_prob=parameters['ls_swap_prob'],
+                                               local_search_insert_prob=parameters['ls_insert_prob'],
+                                               max_neighbors_nb=parameters['max_neighbors_nb'],
+                                               swap_neighbors=swap_neighbors,
+                                               insert_neighbors=insert_neighbors,
+                                               nb_sched=parameters['ls_subset_size'])
     return population
 
 
@@ -65,7 +76,7 @@ def memetic_heuristic(flowshop, parameters):
             It must contain the following keys: 'random_prop', 'deter_prop', 'best_deter', 'pop_init_size',
             'time_limit', 'cross_1_point_prob', 'cross_2_points_prob','cross_position_prob', 'gentrification',
             'mut_swap_prob', 'mut_insert_prob', 'preserved_prop', 'ls_max_iterations', 'ls_swap_prob', 'ls_insert_prob',
-            'max_neighbors_nb', 'use_ls'
+            'max_neighbors_nb', 'use_ls', ls_subset_size
         :return: the statistics (mean, min, max) over the generations of the function memetic_heuristic, the scheduling
         (Ordonnancement object) with the lowest duration, the list of iterations where a restart happened
         """
@@ -82,21 +93,12 @@ def memetic_heuristic(flowshop, parameters):
     list_statistics = [initial_statistics]
     overall_best_scheduling = min(population, key=lambda sched: sched.duree())
     iterations_where_restart = []
-
-    if parameters['use_ls']:
-        population = local_search.local_search(population,
-                                               maximum_nb_iterations=parameters['ls_max_iterations'],
-                                               local_search_swap_prob=parameters['ls_swap_prob'],
-                                               local_search_insert_prob=parameters['ls_insert_prob'],
-                                               max_neighbors_nb=parameters['max_neighbors_nb'],
-                                               swap_neighbors=swap_neighbors,
-                                               insert_neighbors=insert_neighbors)
     index = 0
     iteration_time = 0
     while time.time() - start_time + iteration_time + 1 < 60 * parameters['time_limit']:
         index += 1
         start_time_iteration = time.time()
-        population = update_population(population, flowshop, parameters)
+        population = update_population(population, flowshop, parameters, swap_neighbors, insert_neighbors)
         best_sched = min(population, key=lambda sched: sched.duree())
 
         if overall_best_scheduling.duree() > best_sched.duree():
@@ -116,13 +118,5 @@ def memetic_heuristic(flowshop, parameters):
             population = restart_population(population,
                                             flowshop,
                                             preserved_prop=parameters['preserved_prop'])
-            if parameters['use_ls']:
-                population = local_search.local_search(population,
-                                                       maximum_nb_iterations=parameters['ls_max_iterations'],
-                                                       local_search_swap_prob=parameters['ls_swap_prob'],
-                                                       local_search_insert_prob=parameters['ls_insert_prob'],
-                                                       max_neighbors_nb=parameters['max_neighbors_nb'],
-                                                       swap_neighbors=swap_neighbors,
-                                                       insert_neighbors=insert_neighbors)
         iteration_time = time.time() - start_time_iteration
     return list_statistics, overall_best_scheduling, iterations_where_restart
