@@ -33,6 +33,7 @@ def local_search(population, maximum_nb_iterations, max_neighbors_nb, local_sear
             new_population.append(new_scheduling)
         else:
             new_population.append(scheduling)
+        index += 1
     random.shuffle(new_population)
     return new_population
 
