@@ -27,7 +27,8 @@ class TestSolutionLocalSearchClassMethods(unittest.TestCase):
         insert_neighbors = create_insert_neighbors(flow_shop)
         new_pop = local_search(initial_pop, local_search_swap_prob=0.5, local_search_insert_prob=0.5,
                                maximum_nb_iterations=20, max_neighbors_nb=50, swap_neighbors=swap_neighbors,
-                               insert_neighbors=insert_neighbors)
+                               insert_neighbors=insert_neighbors,
+                               nb_sched=2)
         self.assertEqual(len(initial_pop), len(new_pop))
         self.assertTrue(sum([sched.duree() for sched in new_pop]) < sum([sched.duree() for sched in initial_pop]))
         for scheduling in new_pop:
