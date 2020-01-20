@@ -76,7 +76,7 @@ def memetic_heuristic(flowshop, parameters):
             It must contain the following keys: 'random_prop', 'deter_prop', 'best_deter', 'pop_init_size',
             'time_limit', 'cross_1_point_prob', 'cross_2_points_prob','cross_position_prob', 'gentrification',
             'mut_swap_prob', 'mut_insert_prob', 'preserved_prop', 'ls_max_iterations', 'ls_swap_prob', 'ls_insert_prob',
-            'max_neighbors_nb', 'use_ls', ls_subset_size
+            'max_neighbors_nb', 'use_ls', 'ls_subset_size'
         :return: the statistics (mean, min, max) over the generations of the function memetic_heuristic, the scheduling
         (Ordonnancement object) with the lowest duration, the list of iterations where a restart happened
         """
@@ -113,7 +113,7 @@ def memetic_heuristic(flowshop, parameters):
                 max([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]):
             restart = True
 
-        if is_convergent(population, threshold=entropy_threshold) or restart:
+        if is_convergent(population[:20], threshold=entropy_threshold) or restart:
             iterations_where_restart.append(index)
             population = restart_population(population,
                                             flowshop,
