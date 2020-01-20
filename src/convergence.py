@@ -2,7 +2,9 @@ import math
 
 
 def initialize_threshold(pop_init_size):
-    if pop_init_size < 200:
+    if pop_init_size < 50:
+        entropy_threshold = 5.2
+    elif pop_init_size < 200:
         entropy_threshold = 5.7
     elif pop_init_size < 300:
         entropy_threshold = 7
