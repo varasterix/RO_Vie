@@ -1,11 +1,11 @@
-random_prop float 0.9
-deter_prop float 0.1
+random_prop float 1
+deter_prop float 0
 best_deter bool 0
 pop_init_size int 100
 cross_1_point_prob float 0.2
 cross_2_points_prob float 0.2
 cross_position_prob float 0.6
-gentrification bool 1
+gentrification bool 0
 mut_swap_prob float 0.2
 mut_insert_prob float 0.3
 preserved_prop float 0.2
@@ -14,4 +14,4 @@ ls_swap_prob float 0.7
 ls_insert_prob float 0.3
 ls_max_iterations int 4
 max_neighbors_nb int 300
-ls_subset_size int 4
+ls_subset_size int 10
