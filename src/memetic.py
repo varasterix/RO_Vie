@@ -113,7 +113,7 @@ def memetic_heuristic(flowshop, parameters):
                 max([list_statistics[k][1] for k in range(max(0, len(list_statistics)-10), len(list_statistics))]):
             restart = True
 
-        if is_convergent(population[:20], threshold=entropy_threshold) or restart:
+        if is_convergent(population, threshold=entropy_threshold) or restart:
             iterations_where_restart.append(index)
             population = restart_population(population,
                                             flowshop,
