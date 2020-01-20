@@ -14,3 +14,4 @@ ls_swap_prob float 0.7
 ls_insert_prob float 0.3
 ls_max_iterations int 4
 max_neighbors_nb int 300
+ls_subset_size int 4
