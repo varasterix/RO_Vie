@@ -42,6 +42,9 @@ if visualise_results or is_updated:
     plt.figure("Memetic heuristic results with instance " + file_name)
     plt.title("Memetic heuristic applied to the instance: " + file_name)
     generations = range(len(list_statistics))
+    # Plot restart
+    for index in iterations_where_restart:
+        plt.plot([index, index], [best_known_solution, max_printed_solution], '-y')
     # Mean curve
     plt.plot(generations, [statistics[0] for statistics in list_statistics],
              '-b', label="mean memetic")
@@ -54,9 +57,6 @@ if visualise_results or is_updated:
     # Opt/Best known curve
     plt.plot([0, len(list_statistics) - 1], [best_known_solution, best_known_solution],
              '--k', label="best known, Cmax=" + str(best_known_solution))
-    # Plot restart
-    for index in iterations_where_restart:
-        plt.plot([index, index], [best_known_solution, max_printed_solution], '-y')
 
     plt.xlabel("Generation/Iteration of the population")
     plt.ylabel("Cmax (duration of the best scheduling in the population)")
