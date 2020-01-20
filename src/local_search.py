@@ -65,7 +65,7 @@ def local_search_swap(scheduling, iteration, max_neighbors_nb, neighbors):
     """
     best_scheduling = copy.copy(scheduling)
     candidate = copy.copy(scheduling)
-    duration = scheduling.duree()
+    duration = best_scheduling.duree()
     duration_candidate = candidate.duree()
     if max_neighbors_nb > len(neighbors):
         max_neighbors_nb = len(neighbors)
@@ -118,7 +118,7 @@ def local_search_insert(scheduling, iteration, max_neighbors_nb, neighbors):
     """
     best_scheduling = copy.copy(scheduling)
     candidate = copy.copy(scheduling)
-    duration = scheduling.duree()
+    duration = best_scheduling.duree()
     duration_candidate = candidate.duree()
     if max_neighbors_nb > len(neighbors):
         max_neighbors_nb = len(neighbors)
