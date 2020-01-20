@@ -71,7 +71,7 @@ def local_search_swap(scheduling, iteration, max_neighbors_nb, neighbors):
     :param neighbors: list of neighbors
     :return: the scheduling after the given number of iteration of local search
     """
-
+    best_scheduling = copy.copy(scheduling)
     candidate = copy.copy(scheduling)
     duration = scheduling.duree()
     duration_candidate = candidate.duree()
@@ -84,18 +84,18 @@ def local_search_swap(scheduling, iteration, max_neighbors_nb, neighbors):
             index = random.randint(0, len(visited_neighbors) - 1)
             i, j = visited_neighbors[index][0], visited_neighbors[index][1]
             visited_neighbors.pop(index)
-            temp = copy.copy(scheduling)
+            temp = copy.copy(best_scheduling)
             ls_swap = swap(i, j, temp)
             duration_temp = ls_swap.duree()
             if duration_temp < duration_candidate:
                 duration_candidate = duration_temp
                 candidate = ls_swap
         if duration > duration_candidate:
-            scheduling = candidate
+            best_scheduling = candidate
             duration = duration_candidate
         else:
             break
-    return scheduling
+    return best_scheduling
 
 
 def create_insert_neighbors(flowshop):
@@ -124,7 +124,7 @@ def local_search_insert(scheduling, iteration, max_neighbors_nb, neighbors):
     :param neighbors: list of neighbors
     :return: the scheduling after the given number of iteration of local search
     """
-
+    best_scheduling = copy.copy(scheduling)
     candidate = copy.copy(scheduling)
     duration = scheduling.duree()
     duration_candidate = candidate.duree()
@@ -137,7 +137,7 @@ def local_search_insert(scheduling, iteration, max_neighbors_nb, neighbors):
             index = random.randint(0, len(visited_neighbors) - 1)
             i, j = visited_neighbors[index][0], visited_neighbors[index][1]
             visited_neighbors.pop(index)
-            temp = copy.copy(scheduling)
+            temp = copy.copy(best_scheduling)
             sequence = temp.sequence().copy()
             ls_insert = sequence[i]
             sequence.remove(ls_insert)
@@ -149,8 +149,8 @@ def local_search_insert(scheduling, iteration, max_neighbors_nb, neighbors):
                 duration_candidate = duration_temp
                 candidate = new_scheduling
         if duration > duration_candidate:
-            scheduling = candidate
+            best_scheduling = candidate
             duration = duration_candidate
         else:
             break
-    return scheduling
+    return best_scheduling
